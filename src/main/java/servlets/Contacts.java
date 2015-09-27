@@ -1,6 +1,7 @@
 package servlets;
 
 import Mail.ssl.Sender;
+import Model.Observer.LanguagesObserver;
 import database.DBWorker;
 
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Денис on 13.09.2015.
@@ -20,7 +22,7 @@ public class Contacts extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew())
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         DBWorker dbWorker = new DBWorker();
 
@@ -41,7 +43,7 @@ public class Contacts extends HttpServlet {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         if(session.isNew())
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         DBWorker dbWorker = new DBWorker();
 
@@ -53,6 +55,9 @@ public class Contacts extends HttpServlet {
         request.setAttribute("Name", dbWorker.getPhrase(38, lang));
         request.setAttribute("Message", dbWorker.getPhrase(44, lang));
         request.setAttribute("Send", dbWorker.getPhrase(45, lang));
+
+        ArrayList<String> languages = LanguagesObserver.select();
+        request.setAttribute("languages", languages);
 
         dbWorker.closeConnection();
         RequestDispatcher dispatcher = request.getRequestDispatcher("/contacts.jsp");

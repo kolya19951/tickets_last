@@ -1,12 +1,10 @@
 package servlets;
 
+import Model.Entity.BusConfigElement;
 import Model.Entity.Seat;
 import Model.Entity.Trip;
 import Model.Entity.TripViewer;
-import Model.Observer.BusConfigObserver;
-import Model.Observer.SeatObserver;
-import Model.Observer.SeatPlace;
-import Model.Observer.TripObserver;
+import Model.Observer.*;
 import database.DBWorker;
 
 import javax.servlet.RequestDispatcher;
@@ -36,7 +34,7 @@ public class Step2 extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew())
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         DBWorker dbWorker = new DBWorker();
 
@@ -60,9 +58,12 @@ public class Step2 extends HttpServlet {
         request.setAttribute("TextColor1", dbWorker.getPhrase(59, lang));
         request.setAttribute("TextColor2", dbWorker.getPhrase(60, lang));
 
+        ArrayList<String> languages = LanguagesObserver.select();
+        request.setAttribute("languages", languages);
+
         Integer id = new Integer(request.getParameter("id"));
         ArrayList<Seat> seats = SeatObserver.selectSeats(id);
-        ArrayList<SeatPlace> seatPlaces = BusConfigObserver.busConfig(id);
+        ArrayList<SeatPlace> seatPlaces = BusConfigObserver.getBusConfigByTrip(id);
 
         int maxRow = 0;
         for (SeatPlace item : seatPlaces) {

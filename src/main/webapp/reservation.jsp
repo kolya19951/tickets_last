@@ -1,3 +1,4 @@
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -8,11 +9,33 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
     <script src="calendar_ru.js" type="text/javascript"></script>
+    <script type='text/javascript' src='script.js'></script>
     <script type="text/javascript" src="javascript.js"></script>
     <script src="calendar_ru.js" type="text/javascript"></script>
+    <script src="js/jquery/jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
+    <script src="js/msdropdown/jquery.dd.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/flags.css" />
 </head>
 <body onload="init(); today();">
 <div class="menu">
+    <select name="countries" id="countries" style="width: auto;" onchange="changeLang(this.value)">
+        <% ArrayList<String> languages = (ArrayList<String>) request.getAttribute("languages");
+            session = request.getSession();
+            if(session.isNew())
+                session.setAttribute("lang", "gb");
+            String lang = (String) session.getAttribute("lang");
+            String select = "";
+            for (int i = 0; i < languages.size(); i++) {
+                if (lang.equals(languages.get(i)))
+                    select = "selected";
+            %>
+        <option value='<%=languages.get(i)%>' data-image="images/msdropdown/icons/blank.gif" data-imagecss="flag <%=languages.get(i)%>" data-title="<%=languages.get(i)%>" <%=select%>></option>
+           <%
+               select = "";
+               }
+        %>
+    </select>
     <center><div class="menu_table">
         <div class="menu_row">
             <div class="menu_cell menu_title">${Home}</div>
@@ -54,19 +77,15 @@
     </div>
         </div>
     <div class="frame">
-        <center><%--@declare id="state_list"--%>
+        <%--@declare id="state_list"--%>
+            <center><input type="text" class="input"  list="cities" placeholder="${From}" required max="64" id="from"
+                           oninput="doCompletion(this.id);">
+                <input type="text" class="input" placeholder="${To}" required max="64" id="to" oninput="doCompletion(this.id);" list="cities">
+                <input type="text" class="input" value="${SelectDate}" onfocus="this.select();lcs(this)"
+                       onclick="event.cancelBubble=true;this.select();lcs(this)" class="input" id="date">
+                <input type="submit" class="button" value="${Search}" onClick="search_trips()">
+            </center>
 
-
-            <input type="text" class="input"  list="cities" placeholder="${From}" required max="64" id="from"
-                   oninput="doCompletion(this.id);">
-
-            <datalist id="cities">
-            </datalist>
-            <input type="text" class="input" placeholder="${To}" required max="64" id="to" oninput="doCompletion(this.id);" list="cities">
-            <input type="text" class="input" value="${SelectDate}" onfocus="this.select();lcs(this)"
-                   onclick="event.cancelBubble=true;this.select();lcs(this)" class="input" id="date">
-            <input type="submit" class="button" value="${Search}" onClick="search_trips()">
-        </center>
     </div>
 
     <table id="complete-table" />
@@ -124,4 +143,29 @@
         <input type="submit" id="sendIdButton">
     </form>
 </body>
+<script>
+    $(document).ready(function(e) {
+        try {
+
+            var pagename = document.location.pathname.toString();
+            pagename = pagename.split("/");
+            pages.setIndexByValue(pagename[pagename.length-1]);
+            $("#ver").html(msBeautify.version.msDropdown);
+        } catch(e) {
+            //console.log(e);
+        }
+
+        $("#ver").html(msBeautify.version.msDropdown);
+
+        //convert
+        $("select").msDropdown({roundedBorder:false});
+        createByJson();
+        $("#tech").data("dd");
+    });
+
+
+    //
+</script>
+<datalist id="cities">
+</datalist>
 </html>

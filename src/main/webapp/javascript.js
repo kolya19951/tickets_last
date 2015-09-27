@@ -137,8 +137,9 @@ function appendRoutes(name_from, name_to, stationId) {
 
 function appendBuses(name, busId) {
     option = document.createElement("option");
-    document.getElementById(id).accept = busId;
     option.setAttribute("value", name);
+    option.setAttribute("id", name);
+    option.setAttribute("label", busId);
     document.getElementById("buses").appendChild(option);
 }
 
@@ -276,8 +277,6 @@ function goToPay() {
     desc += document.getElementById("arrivalDate").innerHTML + ", ";
     desc += document.getElementById("arrivalTime").innerHTML + ", ";
     desc += document.getElementById("price").innerHTML + ", ";
-    desc += document.getElementById("surname").value + " ";
-    desc += document.getElementById("name").value;
     document.getElementById("ik_desc").value = desc;
     sendPaymentToServer();
 }
@@ -325,4 +324,28 @@ function goToCassa(responseXML) {
     id = responseXML.getElementsByTagName("ids")[0].childNodes[0].getElementsByTagName("Id")[0].childNodes[0].nodeValue;
     document.getElementById("ik_pm_no").value = id;
     document.getElementById("pay").click();
+}
+
+function createTicket(seat_id){
+    name = document.getElementById("name").value;
+    surname = document.getElementById("surname").value;
+    data = "seat_id=" + seat_id + "&client=" + surname + " " + name;
+    req = initRequest();
+    req.open("POST", "/tickets_manager", true);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = callbackTicket;
+    req.send(data);
+}
+
+function callbackTicket(){
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            responseXML = req.responseXML;
+            var tickets = responseXML.getElementsByTagName("tickets")[0];
+            var ticket = tickets.childNodes[0];
+            var id = ticket.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+            document.getElementById("ik_x_id").value = id;
+            goToPay();
+        }
+    }
 }

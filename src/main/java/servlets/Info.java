@@ -1,5 +1,6 @@
 package servlets;
 
+import Model.Observer.LanguagesObserver;
 import database.DBWorker;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Денис on 13.09.2015.
@@ -26,7 +28,7 @@ public class Info extends HttpServlet {
 
         HttpSession session = request.getSession();
         if(session.isNew())
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         DBWorker dbWorker = new DBWorker();
 
@@ -46,6 +48,9 @@ public class Info extends HttpServlet {
         request.setAttribute("Requiraments1", dbWorker.getPhrase(56, lang));
         request.setAttribute("Requiraments2", dbWorker.getPhrase(57, lang));
         request.setAttribute("Requiraments3", dbWorker.getPhrase(58, lang));
+
+        ArrayList<String> languages = LanguagesObserver.select();
+        request.setAttribute("languages", languages);
 
         dbWorker.closeConnection();
         RequestDispatcher dispatcher = request.getRequestDispatcher("/info.jsp");

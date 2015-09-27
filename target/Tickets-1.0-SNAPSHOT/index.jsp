@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%session = request.getSession();
     if(session.isNew())
-        session.setAttribute("lang", "en");
+        session.setAttribute("lang", "gb");
     String lang = (String) session.getAttribute("lang");%>
 <!doctype html>
 <html>
@@ -16,12 +16,28 @@
 <body>
 
 <center><div class="image_table">
+    <div class="image_row_title">
+        <div class="title">
+            Главная
+        </div>
+        <div class="title">
+            Купить билет
+        </div>
+    </div>
     <div class="image_row_one">
         <div class="bg_one icon">
             <a href="reservation"><img src="img/icon/money.png"></a>
         </div>
         <div class="bg_two icon">
             <a href="info"><img src="img/icon/compose.png"></a>
+        </div>
+    </div>
+    <div class="image_row_title">
+        <div class="title">
+            Главная
+        </div>
+        <div class="title">
+            Купить билет
         </div>
     </div>
     <div class="image_row_two">

@@ -1,4 +1,5 @@
 var id;
+
 function sendAdminPanel(ID) {
     id = ID;
     request(id);
@@ -50,8 +51,14 @@ function getCallBack(action) {
         back = show_routes;
     if (action == "showtrip")
         back = show_trips;
-    if (action == "showbusconfig")
+    if (action == "showseats")
         back = show_bus_config;
+    if (action == "show_config")
+        back = draw_bus;
+    if (action == "showlang")
+        back = show_langs;
+    if (action == "showtickets")
+        back = show_tickets;
     return back;
 }
 
@@ -78,8 +85,8 @@ function show_bus(action) {
                     var seats = bus.getElementsByTagName("seats")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_bus_name"+id+"' value='" + name + "'></td>";
-                    result += "<td><input type='text' id='edit_bus_seats"+id+"' value='" + seats + "'></td>";
+                    result += "<td><input type='text' id='edit_bus_name" + id + "' value='" + name + "'></td>";
+                    result += "<td><input type='text' id='edit_bus_seats" + id + "' value='" + seats + "'></td>";
                     result += "<td><button onclick='delete_bus(this.id)' id='" + id + "'>Удалить</button></td>";
                     result += "<td><button onclick='edit_bus(this.id)' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
@@ -87,6 +94,7 @@ function show_bus(action) {
                 result += "</table>";
             }
             document.getElementById("result").innerHTML = result;
+
         }
     }
 }
@@ -105,7 +113,7 @@ function show_city(action) {
                     var name = city.getElementsByTagName("name")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_city_name"+id+"' value='" + name + "'></td>";
+                    result += "<td><input type='text' id='edit_city_name" + id + "' value='" + name + "'></td>";
                     result += "<td><button onclick='delete_city(this.id)' id='" + id + "'>Удалить</button></td>";
                     result += "<td><button onclick='edit_city(this.id)' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
@@ -133,9 +141,9 @@ function show_station(action) {
                     var city_id = station.getElementsByTagName("city_id")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_station_name"+id+"' value='" + name + "'></td>";
-                    result += "<td><input type='text' id='edit_station_city_name"+id+"' value='" + city_name + "'readonly></td>";
-                    result += "<td><input style='display:none' type='text' id='edit_station_city_id"+id+"' value='" + city_id + "'></td>";
+                    result += "<td><input type='text' id='edit_station_name" + id + "' value='" + name + "'></td>";
+                    result += "<td><input type='text' id='edit_station_city_name" + id + "' value='" + city_name + "'readonly></td>";
+                    result += "<td><input style='display:none' type='text' id='edit_station_city_id" + id + "' value='" + city_id + "'></td>";
                     result += "<td><button onclick='delete_station(this.id)' id='" + id + "'>Удалить</button></td>";
                     result += "<td><button onclick='edit_station(this.id)' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
@@ -146,7 +154,6 @@ function show_station(action) {
         }
     }
 }
-
 
 function show_routes(action) {
     if (req.readyState == 4) {
@@ -169,10 +176,10 @@ function show_routes(action) {
                     var to_city_id = route.getElementsByTagName("to_city_id")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_from_station_name"+id+"' value='" + from_station_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_from_city_name"+id+"' value='" + from_city_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_to_station_name"+id+"' value='" + to_station_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_from_city_nsme"+id+"' value='" + to_city_name + "' readonly></td>";
+                    result += "<td><input type='text' id='edit_from_station_name" + id + "' value='" + from_station_name + "' readonly></td>";
+                    result += "<td><input type='text' id='edit_from_city_name" + id + "' value='" + from_city_name + "' readonly></td>";
+                    result += "<td><input type='text' id='edit_to_station_name" + id + "' value='" + to_station_name + "' readonly></td>";
+                    result += "<td><input type='text' id='edit_from_city_nsme" + id + "' value='" + to_city_name + "' readonly></td>";
                     result += "<td><button onclick='delete_route(this.id)' id='" + id + "'>Удалить</button></td>";
                     result += "</tr>";
                 }
@@ -211,13 +218,13 @@ function show_trips(action) {
                     var to_city_id = trip.getElementsByTagName("to_city_id")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "&thinsp;&thinsp;&thinsp;</td>";
-                    result += "<td><label id='bus_name"+id+"'>" + bus_name + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='departure_date"+id+"'>" + departure_date + " " + departure_time + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='arrival_date"+id+"'>" + arrival_date + " " + arrival_time + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='from_station_name"+id+"'>" + from_station_name + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='from_city_name"+id+"'>" + from_city_name + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='to_station_name"+id+"'>" + to_station_name + "&thinsp;&thinsp;&thinsp;</label></td>";
-                    result += "<td><label id='to_city_name"+id+"'>" + to_city_name + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='bus_name" + id + "'>" + bus_name + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='departure_date" + id + "'>" + departure_date + " " + departure_time + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='arrival_date" + id + "'>" + arrival_date + " " + arrival_time + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='from_station_name" + id + "'>" + from_station_name + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='from_city_name" + id + "'>" + from_city_name + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='to_station_name" + id + "'>" + to_station_name + "&thinsp;&thinsp;&thinsp;</label></td>";
+                    result += "<td><label id='to_city_name" + id + "'>" + to_city_name + "&thinsp;&thinsp;&thinsp;</label></td>";
 
                     result += "<td><button onclick='delete_trip(this.id)' id='" + id + "'>Удалить</button></td>";
                     result += "</tr>";
@@ -232,11 +239,12 @@ function show_trips(action) {
 function show_bus_config(action) {
     if (req.readyState == 4) {
         if (req.status == 200) {
-            var result = "";
+            var result = "<input type='text' id='globalPrice'><button onClick='setGlobalPrice()'>Сохранить</button>";
+            var selected = "";
             responseXML = req.responseXML;
             var seats = responseXML.getElementsByTagName("seats")[0];
             if (seats.childNodes.length > 0) {
-                result = "<table style='position: absolute; left: 0px;'>";
+                result += "<table style='position: absolute; left: 0px;'>";
                 result += "<tr><td>Id</td><td>seat_num</td><td>price</td><td>availability</td><td>row</td><td>place</td></tr>";
                 for (i = 0; i < seats.childNodes.length; i++) {
                     var seat = seats.childNodes[i];
@@ -248,56 +256,128 @@ function show_bus_config(action) {
                     var place = seat.getElementsByTagName("place")[0].childNodes[0].nodeValue;
                     result += "<tr>"
                     result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' size='5' id='place_num"+id+"' value='" + place_num + "'></td>";
-                    result += "<td><input type='text' size='10' id='price"+id+"' value='" + price + "'></td>";
-                    result += "<td><input type='text' size='5' id='availability"+id+"' value='" + availability + "'></td>";
-                    result += "<td><input type='text' size='5' id='row"+id+"' value='" + row + "'></td>";
-                    result += "<td><input type='text' size='5' id='place"+id+"' value='" + place + "'></td>";
-                    result += "<td><button onclick='delete_bus(this.id)' id='" + id + "'>Удалить</button></td>";
-                    result += "<td><button onclick='edit_bus(this.id)' id='" + id + "'>Сохранить</button></td>";
+                    result += "<td><input type='text' size='5' id='place_num" + id + "' value='" + place_num + "' readonly></td>";
+                    result += "<td><input type='text' size='10' id='price" + id + "' value='" + price + "'></td>";
+                    result += "<td><select id='availability" + id + "'>";
+                    selected = "";
+                    if (availability == "free")
+                        selected = "selected";
+                    result += "<option value='free' " + selected + ">free</option>";
+                    selected = "";
+                    if (availability == "reserved by admin")
+                        selected = "selected";
+                    result += "<option value='reserved by admin' " + selected + ">reserved by admin</option>";
+                    selected = "";
+                    if (availability == "reserved")
+                        selected = "selected";
+                    result += "<option value='reserved' " + selected + ">reserved</option>";
+                    selected = "";
+                    if (availability == "sales")
+                        selected = "selected";
+                    result += "<option value='sales' " + selected + ">sales</option></select></td>";
+                    result += "<td><input type='text' size='5' id='row" + id + "' value='" + row + "' readonly></td>";
+                    result += "<td><input type='text' size='5' id='place" + id + "' value='" + place + "' readonly></td>";
+                    result += "<td><button onclick='edit_seat(this.id)' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
                 }
                 result += "</table>";
             }
             document.getElementById("result").innerHTML = result;
         }
-        draw_bus(responseXML);
     }
 }
 
-function draw_bus(responseXML){
-    var seats = responseXML.getElementsByTagName("seats")[0];
-    var indexableseats = new Array();
-    for( i = 0; i < 20; i++){
-        indexableseats[i] = new Array();
-        for(j = 0; j < 5; j++){
-            indexableseats[i][j] = null;
-        }
-    }
-
-    for (i = 0; i < seats.childNodes.length; i++) {
-        var seat = seats.childNodes[i];
-        var place_num = seat.getElementsByTagName("place_num")[0].childNodes[0].nodeValue;
-        var row = seat.getElementsByTagName("row")[0].childNodes[0].nodeValue;
-        var place = seat.getElementsByTagName("place")[0].childNodes[0].nodeValue;
-        indexableseats[row-1][place-1] = seat;
-    }
-    result = "<table class='busTable' style='float: right'>";
-    for (i = 0; i < 20; i++){
-        result += "<tr>";
-        for ( j = 0; j < 5; j++){
-            if (indexableseats[i][j] != null){
-                result += "<td class=" + indexableseats[i][j].getElementsByTagName("price")[0].childNodes[0].nodeValue + " onmousedown='save_place(this.id)' onmouseup='swap_places(this.id)' " +
-                "id=" + indexableseats[i][j].getElementsByTagName("id")[0].childNodes[0].nodeValue + "" +
-                    ">" + indexableseats[i][j].getElementsByTagName("place_num")[0].childNodes[0].nodeValue + "" +
-                    "</td>";
+function show_langs() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            var result = "";
+            responseXML = req.responseXML;
+            var langs = responseXML.getElementsByTagName("languages")[0];
+            if (langs.childNodes.length > 0) {
+                result = "<table>";
+                for (i = 0; i < langs.childNodes.length; i++) {
+                    var lang = langs.childNodes[i];
+                    var name = lang.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                    result += "<tr>"
+                    result += "<td><input type='text' value='" + name + "' readonly></td>";
+                    result += "<td><button onclick='delete_lang(this.id)' id='" + name + "'>Удалить</button></td>";
+                    result += "</tr>";
+                }
+                result += "</table>";
             }
-            else result += "<td id='0' style='background-color: black'>0</td>"
+            document.getElementById("result").innerHTML = result;
         }
-        result += "</tr>";
     }
-    result += "</table>";
-    document.getElementById("result_bus").innerHTML = result;
+}
+
+function show_tickets() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            var result = "";
+            responseXML = req.responseXML;
+            var tickets = responseXML.getElementsByTagName("tickets")[0];
+            if (tickets.childNodes.length > 0) {
+                result = "<table>";
+                for (i = 0; i < tickets.childNodes.length; i++) {
+                    var ticket = tickets.childNodes[i];
+                    var date = ticket.getElementsByTagName("date")[0].childNodes[0].nodeValue;
+                    var from = ticket.getElementsByTagName("from")[0].childNodes[0].nodeValue;
+                    var to = ticket.getElementsByTagName("to")[0].childNodes[0].nodeValue;
+                    var seat_num = ticket.getElementsByTagName("seat_num")[0].childNodes[0].nodeValue;
+                    var client = ticket.getElementsByTagName("client")[0].childNodes[0].nodeValue;
+                    result += "<tr>"
+                    result += "<td><input type='text' value='" + date + "' readonly></td>";
+                    result += "<td><input type='text' value='" + from + "' readonly></td>";
+                    result += "<td><input type='text' value='" + to + "' readonly></td>";
+                    result += "<td><input type='text' value='" + seat_num + "' readonly></td>";
+                    result += "<td><input type='text' value='" + client + "' readonly></td>";
+                    result += "</tr>";
+                }
+                result += "</table>";
+            }
+            document.getElementById("result").innerHTML = result;
+        }
+    }
+}
+
+function draw_bus() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            responseXML = req.responseXML;
+            var seats = responseXML.getElementsByTagName("seats")[0];
+            var indexableseats = new Array();
+            for (i = 0; i < 20; i++) {
+                indexableseats[i] = new Array();
+                for (j = 0; j < 5; j++) {
+                    indexableseats[i][j] = null;
+                }
+            }
+
+            for (i = 0; i < seats.childNodes.length; i++) {
+                var seat = seats.childNodes[i];
+                var place_num = seat.getElementsByTagName("place_num")[0].childNodes[0].nodeValue;
+                var row = seat.getElementsByTagName("row")[0].childNodes[0].nodeValue;
+                var place = seat.getElementsByTagName("place")[0].childNodes[0].nodeValue;
+                indexableseats[row - 1][place - 1] = seat;
+            }
+            result = "<table class='busTable'>";
+            for (i = 0; i < 20; i++) {
+                result += "<tr>";
+                for (j = 0; j < 5; j++) {
+                    if (indexableseats[i][j] != null) {
+                        result += "<td class='" + j + "" + i + "' onmousedown='save_place(this.id)' onmouseup='swap_places(this)' " +
+                            "id=" + indexableseats[i][j].getElementsByTagName("id")[0].childNodes[0].nodeValue + "" +
+                            ">" + indexableseats[i][j].getElementsByTagName("place_num")[0].childNodes[0].nodeValue + "" +
+                            "</td>";
+                    }
+                    else result += "<td class='" + j + "" + i + "' id='0' style='background-color: black' onmouseup='swap_places(this)'>0</td>";
+                }
+                result += "</tr>";
+            }
+            result += "</table>";
+            document.getElementById("result").innerHTML = result;
+        }
+    }
 }
 
 function getUrl(action) {
@@ -321,10 +401,20 @@ function getUrl(action) {
         url = "show_route";
     if (action == "showtrip")
         url = "show_trips";
-    if (action == "showbusconfig")
+    if (action == "show_config")
         url = "show_bus_config";
+    if (action == "showseats")
+        url = "show_seats";
+    if (action == "showlang")
+        url = "show_languages";
+    if (action == "addlang")
+        url = "lang_manager";
+    if (action == "showtickets")
+        url = "show_tickets";
     return url;
 }
+
+var tripId = 0;
 
 function getData(action) {
     data = "";
@@ -352,12 +442,20 @@ function getData(action) {
         trip_time_from = document.getElementById("trip_time_from").value;
         trip_date_to = document.getElementById("trip_date_to").value;
         trip_time_to = document.getElementById("trip_time_to").value;
-        trip_bus = document.getElementById("trip_bus").accept;
+        value = document.getElementById("trip_bus").value
+        trip_bus = document.getElementById(value).label;
         data = "route=" + trip_route + "&departure_date=" + trip_date_from + "&departure_time=" + trip_time_from + "&arrival_date=" + trip_date_to + "&arrival_time=" + trip_time_to + "&bus=" + trip_bus + "&action=add";
     }
-    if (action == "showbusconfig")
-        data = "tripId=" + document.getElementById("seats_trip_id").value;
-
+    if (action == "showseats") {
+        tripId = document.getElementById("seats_trip_id").value;
+        data = "tripId=" + tripId;
+    }
+    if (action == "show_config") {
+        value = document.getElementById("config_bus_name").value
+        data = "bus_id=" + document.getElementById(value).label;
+    }
+    if (action == "addlang")
+        data = "action=add&lang=" + document.getElementById("new_lang_name").value;
     return data;
 }
 
@@ -369,7 +467,7 @@ function changeAdminPanel(object) {
     request("show" + object)
 }
 
-function delete_bus(id){
+function delete_bus(id) {
     alert("Are you sure?");
     url = "bus_manager";
     data = "action=delete&id=" + id;
@@ -378,9 +476,10 @@ function delete_bus(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("bus").click();
 }
 
-function edit_bus(id){
+function edit_bus(id) {
     name = document.getElementById("edit_bus_name" + id).value;
     seats = document.getElementById("edit_bus_seats" + id).value;
     url = "bus_manager";
@@ -390,9 +489,10 @@ function edit_bus(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("bus").click();
 }
 
-function delete_city(id){
+function delete_city(id) {
     alert("Are you sure?");
     url = "city_manager";
     data = "action=delete&id=" + id;
@@ -401,9 +501,10 @@ function delete_city(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("city").click();
 }
 
-function delete_station(id){
+function delete_station(id) {
     alert("Are you sure?");
     url = "station_manager";
     data = "action=delete&id=" + id;
@@ -412,9 +513,10 @@ function delete_station(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("station").click();
 }
 
-function edit_city(id){
+function edit_city(id) {
     name = document.getElementById("edit_city_name" + id).value;
     url = "city_manager";
     data = "action=edit&id=" + id + "&name=" + name;
@@ -423,9 +525,10 @@ function edit_city(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("city").click();
 }
 
-function edit_station(id){
+function edit_station(id) {
     name = document.getElementById("edit_station_name" + id).value;
     city = document.getElementById("edit_station_city_id" + id).value;
     url = "station_manager";
@@ -435,9 +538,23 @@ function edit_station(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("station").click();
 }
 
-function delete_route(id){
+function edit_seat(id) {
+    availability = document.getElementById("availability" + id).value;
+    price = document.getElementById("price" + id).value;
+    url = "seats_manager";
+    data = "action=update&seat_id=" + id + "&availability=" + availability + "&price=" + price;
+    req = initRequest();
+    req.open("POST", url, true);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = callback;
+    req.send(data);
+    document.getElementById("seats").click();
+}
+
+function delete_route(id) {
     alert("Are you sure?");
     url = "route_manager";
     data = "action=delete&id=" + id;
@@ -446,9 +563,12 @@ function delete_route(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("route").click();
+
+
 }
 
-function delete_trip(id){
+function delete_trip(id) {
     alert("Are you sure?");
     url = "trip_manager";
     data = "action=delete&id=" + id;
@@ -457,6 +577,20 @@ function delete_trip(id){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    document.getElementById("trip").click();
+
+}
+
+function delete_lang(id) {
+    alert("Are you sure?");
+    url = "lang_manager";
+    data = "action=delete&lang=" + id;
+    req = initRequest();
+    req.open("POST", url, true);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = callback;
+    req.send(data);
+    document.getElementById("lang").click();
 }
 
 function show_station_autocomplete() {
@@ -478,6 +612,7 @@ function show_station_autocomplete() {
 }
 
 function show_routes_autocomplete() {
+    document.getElementById("routes").innerHTML = "";
     if (req.readyState == 4) {
         if (req.status == 200) {
             responseXML = req.responseXML;
@@ -497,6 +632,7 @@ function show_routes_autocomplete() {
 }
 
 function show_buses_autocomplete() {
+    document.getElementById("buses").innerHTML = "";
     if (req.readyState == 4) {
         if (req.status == 200) {
             responseXML = req.responseXML;
@@ -516,12 +652,23 @@ function show_buses_autocomplete() {
 
 var first_id = 0;
 
-function save_place(id){
+function save_place(id) {
     first_id = id;
 }
 
-function swap_place(second_id){
-    data = "first_id=" + first_id + "&second_id=" + second_id;
+function swap_places(second) {
+    second_id = second.id;
+    if (second_id == 0) {
+        XY = second.className;
+        X = XY.substring(0, 1);
+        Y = XY.substring(1);
+        X++;
+        Y++;
+        data = "action=replace&id=" + first_id + "&row=" + Y + "&place=" + X;
+    }
+    else {
+        data = "action=swap&first_id=" + first_id + "&second_id=" + second_id;
+    }
     req = initRequest();
     req.open("POST", "swap_seats", true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -529,11 +676,44 @@ function swap_place(second_id){
     req.send(data);
 }
 
-function changeLang(value){
+function changeLang(value) {
     req = initRequest();
     req.open("POST", "/change_language", true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = alert;
     req.send("lang=" + value);
     location.reload()
+}
+
+function setGlobalPrice() {
+    req = initRequest();
+    req.open("POST", "/seats_manager", true);
+    price = document.getElementById("globalPrice").value;
+    data = "action=set_global_price&trip_id=" + tripId + "&price=" + price;
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = alert;
+    req.send(data);
+}
+
+function filter(action){
+    from = "";
+    date_from = document.getElementById("filter_date_from").value;
+    date_to = document.getElementById("filter_date_to").value;
+    from = document.getElementById("filter_from_place").value;
+    to = document.getElementById("filter_to_place").value;
+    seat_num = document.getElementById("filter_seat_num").value;
+    client = document.getElementById("filter_client").value;
+    sort = action.substring(7);
+    req = initRequest();
+    req.open("POST", "/show_tickets", true);
+    data = "from_date=" + date_from;
+    data += "&to_date=" + date_to;
+    data += "&from=" + from;
+    data += "&to=" + to;
+    data += "&client=" + client;
+    data += "&seat_num=" + seat_num;
+    data += "&sort_criteria=" + sort;
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = show_tickets;
+    req.send(data);
 }

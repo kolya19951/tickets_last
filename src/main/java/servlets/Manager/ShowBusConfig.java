@@ -1,5 +1,7 @@
 package servlets.Manager;
 
+import Model.Entity.BusConfigElement;
+import Model.Observer.BusConfigObserver;
 import Model.Observer.SeatObserver;
 import Model.Observer.SeatPlaceWithPrice;
 
@@ -27,25 +29,22 @@ public class ShowBusConfig extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
-        long tripId = Long.parseLong(request.getParameter("tripId"));
+        long busId = Long.parseLong(request.getParameter("bus_id"));
 
-        //ArrayList<SeatPlaceWithPrice> seatPlaces = BusConfigObserver.busConfig(tripId);
-        ArrayList<SeatPlaceWithPrice> seatPlaces = SeatObserver.selectSeatsWithPrice(tripId);
+        ArrayList<BusConfigElement> busConfigElements = BusConfigObserver.getBusConfig(busId);
 
         StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < seatPlaces.size(); i++) {
+        for (int i = 0; i < busConfigElements.size(); i++) {
             sb.append("<seat>");
-            sb.append("<id>" + seatPlaces.get(i).getSeatId() + "</id>");
-            sb.append("<place_num>" + seatPlaces.get(i).getSeat_num() + "</place_num>");
-            sb.append("<price>" + seatPlaces.get(i).getPrice() + "</price>");
-            sb.append("<availability>" + seatPlaces.get(i).getAvailability() + "</availability>");
-            sb.append("<row>" + seatPlaces.get(i).getRow() + "</row>");
-            sb.append("<place>" + seatPlaces.get(i).getPlace() + "</place>");
+            sb.append("<id>" + busConfigElements.get(i).getId() + "</id>");
+            sb.append("<place_num>" + busConfigElements.get(i).getSeat_num() + "</place_num>");
+            sb.append("<row>" + busConfigElements.get(i).getRow() + "</row>");
+            sb.append("<place>" + busConfigElements.get(i).getPlace() + "</place>");
             sb.append("</seat>");
         }
 
@@ -58,7 +57,7 @@ public class ShowBusConfig extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

@@ -26,9 +26,6 @@ import java.util.Properties;
 @WebServlet("/success")
 public class SuccessResult extends HttpServlet {
 
-    private static Mail.tls.Sender tlsSender = new Mail.tls.Sender("kolya.simotyuk@gmail.com", "kolya18121995");
-    private static Mail.ssl.Sender sslSender = new Mail.ssl.Sender("kolya.simotyuk@gmail.com", "kolya18121995");
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Sender sender = new Sender("tickets.bus@yandex.ua", "610917qwerty");
         request.setCharacterEncoding("UTF-8");

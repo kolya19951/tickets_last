@@ -1,6 +1,5 @@
 package servlets.Manager;
 
-import Model.Hash.ComposerData;
 import Model.Manager.RouteManager;
 
 import javax.servlet.ServletConfig;
@@ -21,8 +20,6 @@ import java.util.HashMap;
 public class RouteManagerHandler extends HttpServlet {
     private static String str;
     private ServletContext context;
-    private ComposerData compData = new ComposerData();
-    private HashMap cities = compData.getCities();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -31,7 +28,7 @@ public class RouteManagerHandler extends HttpServlet {
 
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -56,7 +53,7 @@ public class RouteManagerHandler extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

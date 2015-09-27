@@ -1,6 +1,5 @@
 package servlets.Manager;
 
-import Model.Hash.ComposerData;
 import Model.Manager.StationManager;
 
 import javax.servlet.ServletConfig;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * Created by Δενθρ on 13.09.2015.
@@ -21,8 +19,6 @@ import java.util.HashMap;
 public class StationManagerHandler extends HttpServlet {
     private static String str;
     private ServletContext context;
-    private ComposerData compData = new ComposerData();
-    private HashMap cities = compData.getCities();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -31,7 +27,7 @@ public class StationManagerHandler extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -56,7 +52,7 @@ public class StationManagerHandler extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

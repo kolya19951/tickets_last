@@ -28,7 +28,7 @@ public class ChangeLanguage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
         lang = request.getParameter("lang");
@@ -39,7 +39,7 @@ public class ChangeLanguage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang;
         lang = request.getParameter("lang");

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="flags_16x111">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/target/Tickets-1.0-SNAPSHOT/img/flags/flags_16x11.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

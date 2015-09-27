@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="flags_16x11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/webapp/img/flags/flags_16x11.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

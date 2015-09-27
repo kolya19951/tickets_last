@@ -14,7 +14,7 @@ public class TicketsForAdmin extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }
@@ -23,7 +23,7 @@ public class TicketsForAdmin extends HttpServlet {
         response.setContentType("text/html");
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin_tickets.jsp");

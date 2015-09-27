@@ -1,6 +1,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="Model.Entity.Seat" %>
 <%@ page import="Model.Observer.SeatPlace" %>
+<%@ page import="Model.Observer.SeatObserver" %>
 <%--
   Created by IntelliJ IDEA.
   User: Коля
@@ -17,11 +18,32 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/fonts.css">
     <script type="text/javascript" src="javascript.js"></script>
-
+    <script type='text/javascript' src='script.js'></script>
+    <script src="js/jquery/jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
+    <script src="js/msdropdown/jquery.dd.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/flags.css" />
     <title>Step 2</title>
 </head>
 <body>
 <div class="menu">
+    <select name="countries" id="countries" style="width: auto;" onchange="changeLang(this.value)">
+        <% ArrayList<String> languages = (ArrayList<String>) request.getAttribute("languages");
+            session = request.getSession();
+            if(session.isNew())
+                session.setAttribute("lang", "gb");
+            String lang = (String) session.getAttribute("lang");
+            String select = "";
+            for (int i = 0; i < languages.size(); i++) {
+                if (lang.equals(languages.get(i)))
+                    select = "selected";
+        %>
+        <option value='<%=languages.get(i)%>' data-image="images/msdropdown/icons/blank.gif" data-imagecss="flag <%=languages.get(i)%>" data-title="<%=languages.get(i)%>" <%=select%>></option>
+        <%
+                select = "";
+            }
+        %>
+    </select>
     <center><div class="menu_table">
         <div class="menu_row">
             <div class="menu_cell menu_title">${Home}</div>
@@ -76,11 +98,20 @@
                         <%
                     for (int j = 0; j < maxRow; j++) {
                         if (indexableSeats[i][j] != null) {
+                            if (SeatObserver.isFree(indexableSeats[i][j].getId())){
                 %>
                     <div title="<%=indexableSeats[i][j].getPrice()%>" class="cell_bus place_free" onClick="choosePlace(this)" id="<%=indexableSeats[i][j].getId()%>"><%=indexableSeats[i][j].getSeat_num()%>
                     </div>
                     <%
-                            }%>
+                            }
+                            else {
+                                %>
+                    <div title="<%=indexableSeats[i][j].getPrice()%>" class="cell_bus place_reserved" onClick="alert('place is closed')" id="<%=indexableSeats[i][j].getId()%>"><%=indexableSeats[i][j].getSeat_num()%>
+                   </div>
+                    <%
+                            }
+                        }
+                    %>
                             <%
                         }
                     %></div>
@@ -122,11 +153,20 @@
                     <%
                         for (int j = 0; j < maxRow; j++) {
                             if (indexableSeats[i][j] != null) {
+                                if (SeatObserver.isFree(indexableSeats[i][j].getId()))
+                                {
                     %>
                     <div title="<%=indexableSeats[i][j].getPrice()%>" class="cell_bus place_free" onClick="choosePlace(this)" id="<%=indexableSeats[i][j].getId()%>"><%=indexableSeats[i][j].getSeat_num()%>
                     </div>
                     <%
-                        }%>
+                        }
+                    else {%>
+                            <div title="<%=indexableSeats[i][j].getPrice()%>" class="cell_bus place_reserved" onClick="alert('place is closed')" id="<%=indexableSeats[i][j].getId()%>"><%=indexableSeats[i][j].getSeat_num()%>
+                </div>
+                    <%
+                        }
+                        }
+                    %>
 
                     <%
                     }
@@ -143,7 +183,8 @@
 </div>
 
 </div>
-<center><div class="footer">
+<center>
+    <div class="footer">
     <div class="footer_menu">
         <ul>
             <li><a href="/">${Home}</a></li>
@@ -155,10 +196,34 @@
     <div class="footer_title">
         <p>${Site} 2015 ©</p>
     </div>
-</div></center>
+</div>
+</center>
 </body>
 <form action="step3" method="get" style="display: none">
     <input type="text" value="0" id="placeId"name="id">
     <input type="submit" id="sendIdButton">
 </form>
+<script>
+    $(document).ready(function(e) {
+        try {
+
+            var pagename = document.location.pathname.toString();
+            pagename = pagename.split("/");
+            pages.setIndexByValue(pagename[pagename.length-1]);
+            $("#ver").html(msBeautify.version.msDropdown);
+        } catch(e) {
+            //console.log(e);
+        }
+
+        $("#ver").html(msBeautify.version.msDropdown);
+
+        //convert
+        $("select").msDropdown({roundedBorder:false});
+        createByJson();
+        $("#tech").data("dd");
+    });
+
+
+    //
+</script>
 </html>

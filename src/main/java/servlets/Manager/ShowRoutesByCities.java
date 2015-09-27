@@ -27,7 +27,7 @@ public class ShowRoutesByCities extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
         long from = Long.parseLong(request.getParameter("from"));
@@ -60,7 +60,7 @@ public class ShowRoutesByCities extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

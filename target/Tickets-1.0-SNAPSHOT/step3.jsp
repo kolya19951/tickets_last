@@ -1,3 +1,4 @@
+<%@ page import="java.util.ArrayList" %>
 <%--
   Created by IntelliJ IDEA.
   User: Коля
@@ -15,9 +16,31 @@
   <link rel="stylesheet" type="text/css" href="css/reset.css">
   <link rel="stylesheet" type="text/css" href="css/fonts.css">
   <script type="text/javascript" src="javascript.js"></script>
+  <script type='text/javascript' src='script.js'></script>
+  <script src="js/jquery/jquery-1.9.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
+  <script src="js/msdropdown/jquery.dd.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/msdropdown/flags.css" />
 </head>
 <body>
 <div class="menu">
+  <select name="countries" id="countries" style="width: auto;" onchange="changeLang(this.value)">
+    <% ArrayList<String> languages = (ArrayList<String>) request.getAttribute("languages");
+      session = request.getSession();
+      if(session.isNew())
+        session.setAttribute("lang", "gb");
+      String lang = (String) session.getAttribute("lang");
+      String select = "";
+      for (int i = 0; i < languages.size(); i++) {
+        if (lang.equals(languages.get(i)))
+          select = "selected";
+    %>
+    <option value='<%=languages.get(i)%>' data-image="images/msdropdown/icons/blank.gif" data-imagecss="flag <%=languages.get(i)%>" data-title="<%=languages.get(i)%>" <%=select%>></option>
+    <%
+        select = "";
+      }
+    %>
+  </select>
   <center><div class="menu_table">
     <div class="menu_row">
       <div class="menu_cell menu_title">${Home}</div>
@@ -136,7 +159,12 @@
           </div>
           <div class="pay_row">
             <div class="pay_submit">
-              <input type="submit" value="${Payments}" class="pay_button" onclick="goToPay()">
+              <%
+                long id = (Long)session.getAttribute("reserved_seat_id");
+              %>
+              <input type="submit" value="${Payments}" class="pay_button" onclick="
+              createTicket(<%=id%>);
+              ">
             </div>
           </div>
         </div>
@@ -184,6 +212,30 @@
   <input type="hidden" name="ik_am" id="ik_am" value="<%=request.getAttribute("price")%>" />
   <input type="hidden" name="ik_cur" id="ik_cur" value="UAH" />
   <input type="hidden" name="ik_desc" id="ik_desc" value="Event Description" />
+  <input type="hidden" name="ik_x_id" id="ik_x_id" value="" />
   <input type="submit" value="Pay" id="pay">
 </form>
+<script>
+  $(document).ready(function(e) {
+    try {
+
+      var pagename = document.location.pathname.toString();
+      pagename = pagename.split("/");
+      pages.setIndexByValue(pagename[pagename.length-1]);
+      $("#ver").html(msBeautify.version.msDropdown);
+    } catch(e) {
+      //console.log(e);
+    }
+
+    $("#ver").html(msBeautify.version.msDropdown);
+
+    //convert
+    $("select").msDropdown({roundedBorder:false});
+    createByJson();
+    $("#tech").data("dd");
+  });
+
+
+  //
+</script>
 </html>

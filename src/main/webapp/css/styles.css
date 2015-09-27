@@ -117,22 +117,16 @@ body,html{
 	min-height: 150px;
 	max-height: 400px;
 }
+
 .input{
 	width: 21%;
-	height:50px; 
+	min-height:50px;
+	max-height: 60px;
 	margin: 3% 1.50% 3% 1.50%; 
 	padding: 0 0 0 1%;
 	font-size: 112.5%; 
-	border-radius: 3px;
+	border-radius: 5px;
 	z-index: 1;
-}
-
-.input:focus{
-	border-radius: 3px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px; 
-	-o-border-radius: 3px;
-	height: 50px;
 }
 
 /*Texts*/
@@ -339,19 +333,19 @@ body,html{
 	text-shadow: 2px 0px 0px #050505; 
 	filter: dropshadow(color=#050505, offx=2, offy=0);}
 
-/* */
+/*
 .bus{
-	width: 50%;
+	width: 60%;
 	height: auto;
 	margin: 8.5% 0 0 0;
 }
 .salon{
 	display: table;
-	width: 70%;
+	width: 90%;
 	height: 240px;
 	border: 4px #D3D3D3 solid;
 	border-width: 1px 1px 1px 1px;
-	border-radius: 50px 50px 0 0; 
+	border-radius: 50px 50px 0 0;
 	-webkit-border-radius: 50px 50px 0 0;
 	-moz-border-radius: 50px 50px 0 0;
 }
@@ -367,18 +361,15 @@ body,html{
 }
 .p{
 	width: 2.5%;
-	height: 2.5;
 }
 .p b{
 	font-family: 'Arian AMU';
 	font-size: 120%;
-	font-style: bold;
-}
 
-/*Home css*/
+}*/
 
 .image_table{
-	margin: 10% 0 0 0;
+	margin: 7% 0 0 0;
 	display: table;
 	width: 40%;
 	height: auto;
@@ -393,6 +384,18 @@ body,html{
 .image_row_two{
 	display: table-row;
 }
+
+.image_row_title{
+	display: table-row;
+}
+
+.title{
+	display: table-cell;
+	font-size: 120%;
+	font-weight: bold;
+	font-family: 'Arian AMU';
+}
+
 .icon {
 
 	font-family: 'Days';
@@ -730,7 +733,7 @@ body,html{
 .bus{
 	width: 50%;
 	height: auto;
-	margin: 10% 0 3% 25%;
+	margin: 10% 5% 3% 25%;
 
 }
 .salon{
@@ -749,7 +752,7 @@ body,html{
 }
 
 .row_place{
-	padding: 1.5% 0 1.5% 10%;
+	padding: 1.5% 4% 1.5% 4%;
 }
 
 .cell_bus{
@@ -757,24 +760,34 @@ body,html{
 	-webkit-border-radius:5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
 	display: table-cell;
-	padding: 0 0 0 7%;
+	text-align: center;
 }
 
 .place_free{
-	width: 50px;
-	height: 50px;
+	min-width: 35px;
+	max-width: 40px;
+	height: 35px;
 	background: #98FB98;
 	border: 1px solid black;
-	padding: 0 0 0 5%;
+
+}
+
+.place_reserved{
+	min-width: 35px;
+	max-width: 40px;
+	height: 35px;
+	background: rgba(0, 0, 0, 0.41);
+	border: 1px solid black;
 
 }
 
 .place_busy{
-	width: 50px;
-	height: 50px;
+	min-width: 35px;
+	max-width: 40px;
+	height: 35px;
 	background: #FF6347;
 	border: 1px solid black;
-	padding: 0 0 0 5%;
+
 }
 
 #cost{
@@ -864,7 +877,7 @@ body,html{
 
 .input_contact{
 	height: 40px;
-	width: 35%;
+	width: 38%;
 	margin: 0 0 3% 0;
 	border-radius: 5px;
 	-moz-border-radius:5px;
@@ -882,7 +895,7 @@ body,html{
 }
 
 .content_contact b{
-	font-size: 130%;
+	font-size: 120%;
 	font-family: 'Arian AMU';
 	font-weight: 400;
 }
@@ -1014,4 +1027,16 @@ body,html{
 	-moz-border-radius: 0 0 6px 0;
 	-webkit-border-radius: 0 0 6px 0;
 	border-radius: 0 0 6px 0;
+}
+
+.adminAdd{
+	display: none;
+}
+
+option{
+	margin: 0 0 2% 0;
+}
+
+option:focus{
+	margin: 0 0 2% 0;
 }

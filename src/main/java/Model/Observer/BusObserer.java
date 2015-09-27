@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by Денис on 18.09.2015.
+ * Created by Р”РµРЅРёСЃ on 18.09.2015.
  */
 public abstract class BusObserer {
     public static ArrayList<Bus> selectBuses(String lang) {

@@ -25,7 +25,7 @@ public class ShowStation extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -52,7 +52,7 @@ public class ShowStation extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

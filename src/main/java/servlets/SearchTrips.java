@@ -2,6 +2,7 @@ package servlets;
 
 import Model.Entity.Trip;
 import Model.Entity.TripViewer;
+import Model.Observer.LanguagesObserver;
 import Model.Observer.TripObserver;
 import database.DBWorker;
 
@@ -34,7 +35,7 @@ public class SearchTrips extends HttpServlet {
         StringBuffer sb = new StringBuffer();
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -60,7 +61,7 @@ public class SearchTrips extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.isNew())
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         DBWorker dbWorker = new DBWorker();
 
@@ -87,8 +88,10 @@ public class SearchTrips extends HttpServlet {
         request.setAttribute("Line4", dbWorker.getPhrase(21, lang));
 
         //request.setAttribute("");
-
         dbWorker.closeConnection();
+        ArrayList<String> languages = LanguagesObserver.select();
+        request.setAttribute("languages", languages);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/reservation.jsp");
         dispatcher.forward(request, response);
     }

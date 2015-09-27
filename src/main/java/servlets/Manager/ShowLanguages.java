@@ -26,7 +26,7 @@ public class ShowLanguages extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -49,12 +49,11 @@ public class ShowLanguages extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }
 
-    @Override
     public void init(ServletConfig config) throws ServletException {
         this.context = config.getServletContext();
     }

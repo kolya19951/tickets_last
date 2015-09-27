@@ -26,7 +26,7 @@ public class BusMangerHandler extends HttpServlet {
 
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
 
@@ -51,7 +51,7 @@ public class BusMangerHandler extends HttpServlet {
             throws IOException, ServletException {
         HttpSession session = request.getSession();
         if(session.isNew()) {
-            session.setAttribute("lang", "en");
+            session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
     }

@@ -11,9 +11,9 @@ public class SeatPlaceWithPrice {
     private int row;
     private int place;
     private double price;
-    private byte availability;
+    private String availability;
 
-    public SeatPlaceWithPrice(long seatId, int seat_num, int row, int place, double price, byte availability) {
+    public SeatPlaceWithPrice(long seatId, int seat_num, int row, int place, double price, String availability) {
         this.seatId = seatId;
         this.seat_num = seat_num;
         this.row = row;
@@ -68,7 +68,7 @@ public class SeatPlaceWithPrice {
         return price;
     }
 
-    public byte getAvailability() {
+    public String getAvailability() {
         return availability;
     }
 
@@ -76,7 +76,7 @@ public class SeatPlaceWithPrice {
         this.price = price;
     }
 
-    public void setAvailability(byte availability) {
+    public void setAvailability(String availability) {
         this.availability = availability;
     }
 }
