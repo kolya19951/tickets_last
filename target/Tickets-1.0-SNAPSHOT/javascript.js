@@ -69,6 +69,10 @@ function search_trips() {
     from = document.getElementById("from").value;
     to = document.getElementById("to").value;
     date = document.getElementById("date").value;
+    y = date.substring(6);
+    m = date.substring(3, 5);
+    d = date.substring(0, 2);
+    date = y + "-" + m + "-" + d;
     var str = "from=" + from + "&to=" + to + "&date=" + date;
     req = initRequest();
     req.open("POST", "reservation", true);
@@ -147,6 +151,8 @@ function clearTable() {
     document.getElementById("cities").innerHTML = "";
 }
 
+
+var cities = {};
 
 function parseMessages(responseXML) {
 
@@ -232,10 +238,15 @@ function buildTripTable(responseXML) {
             h2ColCTo.innerHTML = trip.getElementsByTagName("to")[0].childNodes[0].nodeValue;
             bColDateFrom.innerHTML = trip.getElementsByTagName("datefromtime")[0].childNodes[0].nodeValue;
             bColDateTo.innerHTML = trip.getElementsByTagName("datetotime")[0].childNodes[0].nodeValue;
-            bColCCost.innerHTML = "100 €";
+            min_price = trip.getElementsByTagName("min_price")[0].childNodes[0].nodeValue;
+            max_price = trip.getElementsByTagName("max_price")[0].childNodes[0].nodeValue;
+            if (min_price == max_price)
+                bColCCost.innerHTML = max_price + "€";
+            else
+            bColCCost.innerHTML = min_price + "€ - " + max_price + "€";
         }
     }
-    else{
+    else {
         field = document.getElementById("tripsTable");
         block = document.createElement("div");
         block.innerHTML = "По вашему запросу билетов не найдено";
@@ -261,6 +272,10 @@ function choosePlace(element) {
 }
 
 function goToStep3() {
+    req = initRequest();
+    req.open("POST", "/step2", true);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.send("id=" + previous.id);
     document.getElementById("placeId").value = previous.id;
     document.getElementById("sendIdButton").click();
 }
@@ -293,17 +308,9 @@ function sendPaymentToServer() {
     name = document.getElementById("surname").value;
     surname = document.getElementById("name").value;
     var str = "ik_co_id=" + ik_co_id + "&ik_pm_no=" + ik_pm_no + "&ik_am=" + ik_am + "&ik_cur=" + ik_cur + "&ik_desc=" + ik_desc + "&cost=" + cost + "&name=" + name + " " + surname;
-    if (phone.length > 0) {
-        str += "&phone=" + phone;
-        action = 1;
-    }
-    else if (email.length > 0) {
-        str += "&email=" + email;
-        action = 2;
-    }
-    else if (phone.length > 0 && email.length > 0)
-        action = 3;
-    else action = 0;
+    str += "&phone=" + phone;
+    str += "&email=" + email;
+    action = 3;
     str += "&action=" + action;
     req = initRequest();
     req.open("POST", "/newPayment", true);
@@ -326,7 +333,7 @@ function goToCassa(responseXML) {
     document.getElementById("pay").click();
 }
 
-function createTicket(seat_id){
+function createTicket(seat_id) {
     name = document.getElementById("name").value;
     surname = document.getElementById("surname").value;
     data = "seat_id=" + seat_id + "&client=" + surname + " " + name;
@@ -337,7 +344,7 @@ function createTicket(seat_id){
     req.send(data);
 }
 
-function callbackTicket(){
+function callbackTicket() {
     if (req.readyState == 4) {
         if (req.status == 200) {
             responseXML = req.responseXML;
@@ -345,6 +352,7 @@ function callbackTicket(){
             var ticket = tickets.childNodes[0];
             var id = ticket.getElementsByTagName("id")[0].childNodes[0].nodeValue;
             document.getElementById("ik_x_id").value = id;
+            document.getElementById("ik_suc_u").value = "http://comicat.com.ua/success?id=" + id;
             goToPay();
         }
     }

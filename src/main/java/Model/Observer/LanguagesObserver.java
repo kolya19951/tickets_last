@@ -24,7 +24,9 @@ public abstract class LanguagesObserver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        dbWorker.closeConnection();
         return languages;
+
     }
 
     public static ArrayList<String> selectCitiesNames(String lang) {

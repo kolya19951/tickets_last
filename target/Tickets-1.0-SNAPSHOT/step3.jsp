@@ -43,13 +43,11 @@
   </select>
   <center><div class="menu_table">
     <div class="menu_row">
-      <div class="menu_cell menu_title">${Home}</div>
       <div class="menu_cell menu_title">${Contact}</div>
       <div class="menu_cell menu_title">${BuyTicket}</div>
       <div class="menu_cell menu_title">${Info}</div>
     </div>
     <div class="menu_row">
-      <div class="menu_cell menu_icon"><a href="/"><img src="img/icon/camera.png" width="72" height="72"></a></div>
       <div class="menu_cell menu_icon"><a href="contacts"><img src="img/icon/mail.png" width="72" height="72"></a></div>
       <div class="menu_cell menu_icon"><a href="reservation"><img src="img/icon/money.png" width="72" height="72"></a></div>
       <div class="menu_cell menu_icon"><a href="info"><img src="img/icon/compose.png" width="72" height="72"></a></div>
@@ -195,7 +193,6 @@
 <center><div class="footer">
   <div class="footer_menu">
     <ul>
-      <li><a href="/">${Home}</a></li>
       <li><a href="contacts">${Contact}</a></li>
       <li><a href="reservation">${BuyTicket}</a></li>
       <li><a href="info">${Info}</a></li>
@@ -213,6 +210,7 @@
   <input type="hidden" name="ik_cur" id="ik_cur" value="UAH" />
   <input type="hidden" name="ik_desc" id="ik_desc" value="Event Description" />
   <input type="hidden" name="ik_x_id" id="ik_x_id" value="" />
+  <input type="hidden" name="ik_suc_u" id="ik_suc_u" value="" />
   <input type="submit" value="Pay" id="pay">
 </form>
 <script>

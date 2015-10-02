@@ -18,6 +18,9 @@ public class Trip {
     private Date arrival_date;
     private Time arrival_time;
     private Bus bus;
+    private double down_price;
+    private double upper_price;
+
 
     public Trip(long id) {
         this.id = id;
@@ -52,6 +55,8 @@ public class Trip {
             this.departure_time = resultSet.getTime(14);
             this.arrival_date = resultSet.getDate(15);
             this.arrival_time = resultSet.getTime(15);
+            this.down_price = resultSet.getDouble(16);
+            this.upper_price = resultSet.getDouble(17);
         } catch (SQLException e) {
             e.printStackTrace();
         }

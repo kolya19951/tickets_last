@@ -42,9 +42,9 @@ public class Step3 extends HttpServlet {
             session.setAttribute("lang", "gb");
         String lang = (String) session.getAttribute("lang");
         long id = Long.parseLong(request.getParameter("id"));
-        if (SeatObserver.isFree(id)) {
-            session.setAttribute("reserved_seat_id", id);
-            SeatManager.updateAvailability(id, "reserved");
+        long reserved_seat_id = (Long)session.getAttribute("reserved_seat_id");
+        if (id == reserved_seat_id) {
+            //session.setAttribute("reserved_seat_id", id);
 
             DBWorker dbWorker = new DBWorker();
 

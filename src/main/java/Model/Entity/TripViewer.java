@@ -14,8 +14,10 @@ public class TripViewer {
     private Time departureTime;
     private Date arrival;
     private Time arrivalTime;
+    private double min_price;
+    private double max_price;
 
-    public TripViewer(int id, String from, String to, Date departure, Time departureTime, Date arrival, Time arrivalTime) {
+    public TripViewer(int id, String from, String to, Date departure, Time departureTime, Date arrival, Time arrivalTime, double min_price, double max_price) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -23,6 +25,8 @@ public class TripViewer {
         this.departureTime = departureTime;
         this.arrival = arrival;
         this.arrivalTime = arrivalTime;
+        this.min_price = min_price;
+        this.max_price = max_price;
     }
 
     public TripViewer(int id, String from, String to, Date departure, Date arrival) {
@@ -53,6 +57,29 @@ public class TripViewer {
         return to;
     }
 
+    public void setDepartureTime(Time departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setArrivalTime(Time arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public double getMin_price() {
+        return min_price;
+    }
+
+    public void setMin_price(double min_price) {
+        this.min_price = min_price;
+    }
+
+    public double getMax_price() {
+        return max_price;
+    }
+
+    public void setMax_price(double max_price) {
+        this.max_price = max_price;
+    }
 
     public void setTo(String to) {
         this.to = to;

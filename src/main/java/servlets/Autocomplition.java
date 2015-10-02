@@ -1,4 +1,5 @@
 package servlets;
+import Model.Observer.LanguagesObserver;
 import database.DBWorker;
 
 import javax.servlet.ServletConfig;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by ����� on 13.09.2015.
@@ -32,6 +34,8 @@ public class Autocomplition extends HttpServlet {
             session.setAttribute("lang", "gb");
         }
         String lang = (String) session.getAttribute("lang");
+        //Считывание языков
+        ArrayList<String> languages = LanguagesObserver.select();
 
         StringBuffer sb = new StringBuffer();
 
@@ -39,8 +43,12 @@ public class Autocomplition extends HttpServlet {
         if (action.equals("complete")) {
             if (!targetId.equals("")) {
                 DBWorker dbWorker = new DBWorker();
-                String query = "SELECT * FROM cities WHERE name_"+lang+" LIKE '%" + targetId + "%'";
-                System.out.println();
+                //String query = "SELECT * FROM cities WHERE name_"+lang+" LIKE '%" + targetId + "%'";
+                String l_first = languages.remove(0);
+                String query = "SELECT Id, name_"+lang+" FROM cities WHERE name_"+l_first+" LIKE '%" + targetId + "%'";
+                for(String l: languages) {
+                    query += " OR name_"+l+" LIKE '%" + targetId + "%'";
+                }
                 ResultSet resultSet = dbWorker.executeQuery(query);
 
                 //sb.append("<action><name>autocomplete</name></action>");

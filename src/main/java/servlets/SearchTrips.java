@@ -51,6 +51,8 @@ public class SearchTrips extends HttpServlet {
             sb.append("<triptime>" + (item.getArrival().getTime() - item.getDeparture().getTime())/(60*1000*60) + "</triptime>");
             sb.append("<to>" + item.getTo() + "</to>");
             sb.append("<id>" + item.getId() + "</id>");
+            sb.append("<max_price>" + item.getMax_price() + "</max_price>");
+            sb.append("<min_price>" + item.getMin_price() + "</min_price>");
             sb.append("</trip>");
         }
         response.setContentType("text/xml");

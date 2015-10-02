@@ -11,6 +11,10 @@ import java.sql.SQLException;
  */
 public abstract class BusManager {
     static public void add(String name, int seats, String lang) {
+        if (name.equals(""))
+            name = "no name";
+        if (lang.equals(""))
+            lang = "gb";
         //String query = "INSERT INTO buses (name, seats) VALUES ('" + bus.getName() + "', " + bus.getSeats() + ")";
         String query = "INSERT INTO buses (name_"+ lang +", seats) VALUES ('"+ name +"', "+ seats +")";
         //String query = "SELECT name FROM buses WHERE id = 1";

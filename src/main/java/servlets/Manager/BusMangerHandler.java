@@ -45,6 +45,7 @@ public class BusMangerHandler extends HttpServlet {
         } else {
             System.out.println("Illegal action");
         }
+        response.getWriter().write("");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)

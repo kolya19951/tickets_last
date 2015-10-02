@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by Денис on 13.09.2015.
+ * Created by пїЅпїЅпїЅпїЅпїЅ on 13.09.2015.
  */
 @WebServlet("/seats_manager")
 public class SeatsManagerHandler extends HttpServlet {
@@ -43,6 +43,7 @@ public class SeatsManagerHandler extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             SeatManager.setGlobalPrice(trip_id, price);
         }
+        response.getWriter().write("");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)

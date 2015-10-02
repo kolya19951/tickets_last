@@ -46,6 +46,7 @@ public class LanguageManagerHandler extends HttpServlet {
         if(lang.equals(name)) {
             session.setAttribute("lang", "gb");
         }
+        response.getWriter().write("");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)

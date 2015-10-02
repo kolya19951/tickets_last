@@ -1,9 +1,15 @@
 package Mail.ssl;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.*;
         import javax.mail.internet.InternetAddress;
         import javax.mail.internet.MimeMessage;
-        import java.util.Properties;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
 public class Sender {
 
@@ -34,10 +40,38 @@ public class Sender {
             message.setFrom(new InternetAddress(fromEmail));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject(subject);
-            message.setText(text);
+            message.setContent(text, "text/html; charset=utf-8");
+            //message.setDataHandler(new DataHandler(new HTMLDataSource(text)));
+            //message.setText(text);
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        }
+    }
+    static class HTMLDataSource implements DataSource {
+        private String html;
+
+        public HTMLDataSource(String htmlString) {
+            html = htmlString;
+        }
+
+        // Возвращаем html строку в InputStream.
+        // Каждый раз возвращается новый поток
+        public InputStream getInputStream() throws IOException {
+            if (html == null) throw new IOException("Null HTML");
+            return new ByteArrayInputStream(html.getBytes());
+        }
+
+        public OutputStream getOutputStream() throws IOException {
+            throw new IOException("This DataHandler cannot write HTML");
+        }
+
+        public String getContentType() {
+            return "text/html";
+        }
+
+        public String getName() {
+            return "JAF text/html dataSource to send e-mail only";
         }
     }
 }

@@ -29,6 +29,7 @@ public class SwapSeatPlaces extends HttpServlet {
             int place = Integer.parseInt(req.getParameter("place"));
             BusConfigManager.replaceSeat(id, row, place);
         }
+        resp.getWriter().write("");
     }
 
     @Override

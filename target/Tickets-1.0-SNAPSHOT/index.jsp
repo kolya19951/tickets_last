@@ -2,8 +2,13 @@
 <%session = request.getSession();
     if(session.isNew())
         session.setAttribute("lang", "gb");
+    session.setAttribute("rights", "user");
     String lang = (String) session.getAttribute("lang");%>
 <!doctype html>
+
+<%
+    response.sendRedirect("/reservation");
+%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,14 +21,6 @@
 <body>
 
 <center><div class="image_table">
-    <div class="image_row_title">
-        <div class="title">
-            Главная
-        </div>
-        <div class="title">
-            Купить билет
-        </div>
-    </div>
     <div class="image_row_one">
         <div class="bg_one icon">
             <a href="reservation"><img src="img/icon/money.png"></a>
@@ -32,20 +29,12 @@
             <a href="info"><img src="img/icon/compose.png"></a>
         </div>
     </div>
-    <div class="image_row_title">
-        <div class="title">
-            Главная
-        </div>
-        <div class="title">
-            Купить билет
-        </div>
-    </div>
     <div class="image_row_two">
         <div class="bg_three icon">
             <a href="contacts"><img src="img/icon/mail.png"></a>
         </div>
         <div class="bg_four icon">
-            <a href=""><img src="img/icon/camera.png"></a>
+            <a href=""><img src="img/icon/home.png"></a>
         </div>
     </div>
 </div></center>

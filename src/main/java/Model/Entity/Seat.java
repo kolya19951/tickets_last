@@ -40,18 +40,19 @@ public class Seat {
         resultSet = dbWorker.executeQuery(query);
 
         try {
-            resultSet.next();
-            City c1 = new City(resultSet.getLong(2), resultSet.getString(1));
-            City c2 = new City(resultSet.getLong(4), resultSet.getString(3));
-            Station s1 = new Station(resultSet.getLong(6), c1, resultSet.getString(5));
-            Station s2 = new Station(resultSet.getLong(8), c2, resultSet.getString(7));
-            Route route = new Route(resultSet.getLong(9), s1, s2);
-            Bus bus = new Bus(resultSet.getLong(10), resultSet.getString(11), resultSet.getInt(12));
-            Trip trip = new Trip(resultSet.getLong(13), route, bus, resultSet.getDate(14), resultSet.getTime(14), resultSet.getDate(15), resultSet.getTime(15));
-            this.trip = trip;
-            seat_num = resultSet.getInt(16);
-            price = resultSet.getDouble(17);
-            availability = resultSet.getByte(18);
+            if (resultSet.next()) {
+                City c1 = new City(resultSet.getLong(2), resultSet.getString(1));
+                City c2 = new City(resultSet.getLong(4), resultSet.getString(3));
+                Station s1 = new Station(resultSet.getLong(6), c1, resultSet.getString(5));
+                Station s2 = new Station(resultSet.getLong(8), c2, resultSet.getString(7));
+                Route route = new Route(resultSet.getLong(9), s1, s2);
+                Bus bus = new Bus(resultSet.getLong(10), resultSet.getString(11), resultSet.getInt(12));
+                Trip trip = new Trip(resultSet.getLong(13), route, bus, resultSet.getDate(14), resultSet.getTime(14), resultSet.getDate(15), resultSet.getTime(15));
+                this.trip = trip;
+                seat_num = resultSet.getInt(16);
+                price = resultSet.getDouble(17);
+                availability = resultSet.getByte(18);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,7 +131,8 @@ public class Seat {
 
     public void setAvailability(byte availability) {
         DBWorker dbWorker = new DBWorker();
-        String query = "UPDATE seats SET availability = " + availability;
+        String query = "UPDATE seats SET availability = " + availability + " WHERE Id = " + getId();
+        dbWorker.execute(query);
         dbWorker.closeConnection();
         this.availability = availability;
     }

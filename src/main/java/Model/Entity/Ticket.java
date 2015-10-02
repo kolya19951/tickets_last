@@ -42,11 +42,10 @@ public class Ticket {
         DBWorker dbWorker = new DBWorker();
         String query = "SELECT seat_id, client FROM tickets WHERE Id = " + id;
         ResultSet resultSet = dbWorker.executeQuery(query);
-        long seat_id;
         try {
             resultSet.next();
             this.client = resultSet.getString("client");
-            seat_id = resultSet.getLong("seat_id");
+            long seat_id = resultSet.getLong("seat_id");
             this.seat = new Seat(seat_id);
 
             date = seat.getTrip().getDeparture_date();
@@ -145,7 +144,7 @@ public class Ticket {
         String query = "UPDATE tickets SET status = " + status + " WHERE Id = " + this.getId();
         dbWorker.execute(query);
         dbWorker.closeConnection();
-        this.seat.setAvailability((byte) 2);
+        seat.setAvailability((byte) 2);
         this.status = status;
     }
 

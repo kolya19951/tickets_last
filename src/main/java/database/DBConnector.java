@@ -12,12 +12,12 @@ import java.sql.SQLException;
  */
 public class DBConnector {
     //private static final String URL = "jdbc:mysql://localhost:3306/ishop"
-    private static final String URL = "jdbc:mysql://localhost:3306/ticket_store";
-    //private static final String URL = "jdbc:mysql://localhost:3306/comicat";
-   // private static final String LOGIN = "comicat";
-    private static final String LOGIN = "root";
-    private static final String PASSWORD = "1111";
-    //private static final String PASSWORD = "1234";
+    //private static final String URL = "jdbc:mysql://localhost:3306/ticket_store";
+    private static final String URL = "jdbc:mysql://localhost:3306/comicat";
+    private static final String LOGIN = "comicat";
+    //private static final String LOGIN = "root";
+    //private static final String PASSWORD = "1111";
+    private static final String PASSWORD = "1234";
     //private static final String PASSWORD = "qwertyZXCVBN9";
     Connection connection;
 

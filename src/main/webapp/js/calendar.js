@@ -1,3 +1,17 @@
+/* —- Swazz Javascript Calendar —-
+ /* —- v 1.0 3rd November 2006
+ By Oliver Bryant
+ http://calendar.swazz.org
+
+ Update:
+ Gene Bechtold
+ http://www.bechtold.biz
+ 12/11/2011
+
+ C помощью разных добрых людей:
+ tullin
+ */
+
 function getObj(objID)
 {
     if (document.getElementById) {return document.getElementById(objID);}
@@ -66,24 +80,21 @@ var ccy=now.getFullYear();
 // For current selected date
 var selectedd, selectedm, selectedy;
 
-document.write('<table id="fc" style=" width: 21%; height: 150px; z-index: 2; position:absolute; border-collapse:collapse;background:#FFFFFF;border:1px solid #FFD088;display:none;-moz-user-select:none;-khtml-user-select:none;user-select:none;" cellpadding="10">');
+document.write('<table id="fc" style=" z-index:2; position:absolute;border-collapse:collapse;background:#FFFFFF;border:3px #4682B4 solid ;display:none;-moz-user-select:none;-khtml-user-select:none;user-select:none;" cellpadding="2">');
 document.write('<tr style="font:bold 13px Arial" onselectstart="return false"><td style="cursor:pointer;font-size:15px" onclick="upmonth(-1)">&laquo;</td><td colspan="5" id="mns" align="center"></td><td align="right" style="cursor:pointer;font-size:15px" onclick="upmonth(1)">&raquo;</td></tr>');
-document.write('<tr style="background:#FF9900;font:12px Arial;color:#FFFFFF"><td align=center>П</td><td align=center>В</td><td align=center>С</td><td align=center>Ч</td><td align=center>П</td><td align=center>С</td><td align=center>В</td></tr>');
+document.write('<tr style="background:#0294B5;font:12px Arial;color:#FFFFFF"><td align=center>П</td><td align=center>В</td><td align=center>С</td><td align=center>Ч</td><td align=center>П</td><td align=center>С</td><td align=center>В</td></tr>');
 for(var kk=1;kk<=6;kk++) {
     document.write('<tr>');
     for(var tt=1;tt<=7;tt++) {
         num=7 * (kk-1) - (-tt);
-        document.write('<td id="cv' + num + '" style="width:18px;height:18px">&nbsp;</td>');
+        document.write('<td id="cv' + num + '" style="width:30px;height:30px">&nbsp;</td>');
     }
     document.write('</tr>');
 }
-document.write('<tr><td colspan="7" align="center" style="cursor:pointer;font:13px Arial;background:#FFC266" onclick="today()">Сегодня: '+addnull(sccd,sccm+1,sccy)+'</td></tr>');
+document.write('<tr><td colspan="7" align="center" style="cursor:pointer; color: white; font:13px Arial;background:#0294B5"; onclick="today()">Today: '+addnull(sccd,sccm+1,sccy)+'</td></tr>');
 document.write('</table>');
 
 document.all?document.attachEvent('onclick',checkClick):document.addEventListener('click',checkClick,false);
-
-
-
 
 var updobj;
 function lcs(ielem) {
@@ -92,7 +103,7 @@ function lcs(ielem) {
     getObj('fc').style.top=Top(ielem)+ielem.offsetHeight+'px';
     getObj('fc').style.display='';
 
-    // First check date is valid
+// First check date is valid
     curdt=ielem.value;
     curdtarr=curdt.split('-');
     isdt=true;
@@ -122,7 +133,7 @@ function evtTgt(e){
 }
 function EvtObj(e){if(!e)e=window.event;return e;}
 function cs_over(e) {
-    evtTgt(EvtObj(e)).style.background='#FFEBCC';
+    evtTgt(EvtObj(e)).style.background='#00DDFF';
 }
 function cs_out(e) {
     evtTgt(EvtObj(e)).style.background='#FFFFFF';
@@ -132,7 +143,7 @@ function cs_click(e) {
     getObj('fc').style.display='none';
 }
 
-var mn=new Array('Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентрябрь','Октябрь','Ноябрь','Декабрь');
+var mn=new Array('January','Februar','March','April','May','June','July','August','September','October','November','December');
 var mnn=new Array('31','28','31','30','31','30','31','31','30','31','30','31');
 var mnl=new Array('31','29','31','30','31','30','31','31','30','31','30','31');
 var calvalarr=new Array(42);
@@ -143,7 +154,7 @@ function f_cps(obj) {
     obj.style.color='#333333';
     obj.style.textAlign='center';
     obj.style.textDecoration='none';
-    obj.style.border='1px solid #FFD088';//'1px solid #606060';
+    obj.style.border='3px solid #4682B4';//'1px solid #606060';
     obj.style.cursor='pointer';
 }
 
@@ -189,26 +200,26 @@ function prepcalendar(hd,cm,cy) {
             cv.onmouseout=cs_out;
             cv.onclick=cs_click;
 
-            // if today
+// if today
             if (sccm == cm && sccd == (d-cd) && sccy == cy)
-                cv.style.color='#FF9900';
+                cv.style.color='#00000';
 
-            // if selected date
+// if selected date
             if (cm == selectedm && cy == selectedy && selectedd == (d-cd) )
             {
-                cv.style.background='#FFEBCC';
-                //cv.style.color='#e0d0c0';
-                //cv.style.fontSize='1.1em';
-                //cv.style.fontStyle='italic';
-                //cv.style.fontWeight='bold';
+                cv.style.background='#00DDFF';
+//cv.style.color='#e0d0c0';
+//cv.style.fontSize='1.1em';
+//cv.style.fontStyle='italic';
+//cv.style.fontWeight='bold';
 
-                // when use style.background
+// when use style.background
                 cv.onmouseout=null;
             }
 
             cv.innerHTML=d-cd;
 
-            calvalarr[d]=addnull(cy,cm-(-1),d-cd);
+            calvalarr[d]=addnull(d-cd,cm-(-1),cy);
         }
         else {
             cv.innerHTML='&nbsp;';

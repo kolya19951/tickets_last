@@ -4,6 +4,7 @@ import Model.Entity.BusConfigElement;
 import Model.Entity.Seat;
 import Model.Entity.Trip;
 import Model.Entity.TripViewer;
+import Model.Manager.SeatManager;
 import Model.Observer.*;
 import database.DBWorker;
 
@@ -28,7 +29,10 @@ public class Step2 extends HttpServlet {
     private ServletContext context;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        long id = Long.parseLong(request.getParameter("id"));
+        HttpSession httpSession = request.getSession(true);
+        httpSession.setAttribute("reserved_seat_id", id);
+        SeatManager.updateAvailability(id, "reserved");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

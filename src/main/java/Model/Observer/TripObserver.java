@@ -100,7 +100,7 @@ public abstract class TripObserver {
     public static ArrayList<TripViewer> findTripsViewers(String fromCity, String toCity, String date, String lang) {
         ArrayList<TripViewer> tripViewers = new ArrayList<TripViewer>();
         ResultSet resultSet = null;
-        String query = "SELECT trips.Id, s1.name_"+lang+", s2.name_"+lang+", trips.departure, trips.arrival FROM trips, routes, stations s1, stations s2 WHERE\n" +
+        String query = "SELECT trips.Id, s1.name_"+lang+", s2.name_"+lang+", trips.departure, trips.arrival, MIN(seats.price), MAX(seats.price)  FROM trips, routes, stations s1, stations s2, seats WHERE\n" +
                 "       routes.Id = trips.route       \n" +
                 "       AND\n" +
                 "       routes.from_station = s1.Id\n" +
@@ -111,13 +111,15 @@ public abstract class TripObserver {
                 "       AND\n" +
                 "       s2.city = (SELECT Id FROM cities WHERE name_"+lang+" = '" + toCity + "')" +
                 "       AND\n" +
-                "       trips.departure >= '"+ date +"' AND trips.departure < '"+ date +" 23:59:59.997'";
+                "       trips.departure >= '"+ date +"' AND trips.departure < '"+ date +" 23:59:59.997'" +
+                "       AND \n" +
+                "       seats.trip = trips.Id";
         DBWorker dbWorker = new DBWorker();
         resultSet = dbWorker.executeQuery(query);
         try {
             while (resultSet.next()) {
                 //trips.add(new Trip(resultSet.getInt("Id")));
-                tripViewers.add(new TripViewer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4), resultSet.getTime(4), resultSet.getDate(5), resultSet.getTime(5)));
+                tripViewers.add(new TripViewer(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getDate(4), resultSet.getTime(4), resultSet.getDate(5), resultSet.getTime(5), resultSet.getDouble(6), resultSet.getDouble(7)));
             }
         } catch (SQLException e) {
             e.printStackTrace();

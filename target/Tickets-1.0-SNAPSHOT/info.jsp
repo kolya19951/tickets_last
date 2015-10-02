@@ -36,13 +36,11 @@
     </select>
     <center><div class="menu_table">
         <div class="menu_row">
-            <div class="menu_cell menu_title">${Home}</div>
             <div class="menu_cell menu_title">${Contact}</div>
             <div class="menu_cell menu_title">${BuyTicket}</div>
             <div class="menu_cell menu_title">${Info}</div>
         </div>
         <div class="menu_row">
-            <div class="menu_cell menu_icon"><a href="/"><img src="img/icon/camera.png" width="72" height="72"></a></div>
             <div class="menu_cell menu_icon"><a href="contacts"><img src="img/icon/mail.png" width="72" height="72"></a></div>
             <div class="menu_cell menu_icon"><a href="reservation"><img src="img/icon/money.png" width="72" height="72"></a></div>
             <div class="menu_cell menu_icon"><a href="info"><img src="img/icon/compose.png" width="72" height="72"></a></div>
@@ -83,7 +81,6 @@
 <center><div class="footer">
     <div class="footer_menu">
         <ul>
-            <li><a href="/">${Home}</a></li>
             <li><a href="contacts">${Contact}</a></li>
             <li><a href="reservation">${BuyTicket}</a></li>
             <li><a href="info">${Info}</a></li>

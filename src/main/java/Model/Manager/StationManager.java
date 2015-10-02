@@ -7,6 +7,10 @@ import database.DBWorker;
  */
 public abstract class StationManager {
     static public void add(long city, String name, String lang) {
+        if (name.equals(""))
+            name = "no name";
+        if (lang.equals(""))
+            lang = "gb";
         //String query = "INSERT INTO buses (name, seats) VALUES ('" + bus.getName() + "', " + bus.getSeats() + ")";
         String query = "INSERT INTO stations (city, name_"+lang+") VALUES ("+ city + ", '"+ name +"')";
         //String query = "SELECT name FROM buses WHERE id = 1";

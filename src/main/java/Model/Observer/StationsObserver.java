@@ -50,6 +50,25 @@ public abstract class StationsObserver {
         return stations;
     }
 
+    public static ArrayList<Station> selectWithFilter(String lang, String filter) {
+        ArrayList<Station> stations = new ArrayList<Station>();
+        DBWorker dbWorker = new DBWorker();
+        ResultSet resultSet = null;
+        String query = "SELECT cities.name_"+lang+", cities.Id, stations.name_"+lang+", stations.Id FROM cities, stations WHERE stations.city = cities.Id AND cities.name_"+lang+" LIKE '%"+ filter + "%'";
+
+        resultSet = dbWorker.executeQuery(query);
+        try {
+            while (resultSet.next()) {
+                City city = new City(resultSet.getLong(2), resultSet.getString(1));
+                Station station = new Station(resultSet.getLong(4), city, resultSet.getString(3));
+                stations.add(station);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stations;
+    }
+
     public static ArrayList<String> selectCitiesNames(String lang) {
         ArrayList<String> cities = new ArrayList<String>();
         ResultSet resultSet = null;

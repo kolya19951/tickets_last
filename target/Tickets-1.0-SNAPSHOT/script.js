@@ -20,6 +20,8 @@ function initRequest() {
 var url;
 
 function request(action) {
+    if (action == "showconfig" || action == "showtranslator")
+        return;
     url = getUrl(action);
     data = getData(action);
     callback = getCallBack(action);
@@ -28,19 +30,22 @@ function request(action) {
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
+    event(action);
 }
 
 function getCallBack(action) {
     if (action == "add_bus")
-        back = "callbacknew_bus";
+        back = refresh_buses;
     if (action == "add_city")
-        back = "city_manager";
+        back = refresh_cities;
     if (action == "add_station")
-        back = "station_manager";
+        back = refresh_stations;
     if (action == "add_route")
-        back = "route_manager";
+        back = refresh_routes;
     if (action == "add_trip")
-        back = "trip_manager";
+        back = refresh_trips;
+    if (action == "addlang")
+        back = refresh_langs;
     if (action == "showbus")
         back = show_bus;
     if (action == "showcity")
@@ -55,10 +60,14 @@ function getCallBack(action) {
         back = show_bus_config;
     if (action == "show_config")
         back = draw_bus;
+    if (action == "showconfig")
+        back = null;
     if (action == "showlang")
         back = show_langs;
     if (action == "showtickets")
         back = show_tickets;
+    if (action == "translator1" || action == "translator2")
+        back = show_translator;
     return back;
 }
 
@@ -77,21 +86,20 @@ function show_bus(action) {
             responseXML = req.responseXML;
             var buses = responseXML.getElementsByTagName("buses")[0];
             if (buses.childNodes.length > 0) {
-                result = "<table>";
+                result = "<div class='classTable'><table>";
                 for (i = 0; i < buses.childNodes.length; i++) {
                     var bus = buses.childNodes[i];
                     var id = bus.getElementsByTagName("id")[0].childNodes[0].nodeValue;
                     var name = bus.getElementsByTagName("name")[0].childNodes[0].nodeValue;
                     var seats = bus.getElementsByTagName("seats")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_bus_name" + id + "' value='" + name + "'></td>";
-                    result += "<td><input type='text' id='edit_bus_seats" + id + "' value='" + seats + "'></td>";
-                    result += "<td><button onclick='delete_bus(this.id)' id='" + id + "'>Удалить</button></td>";
-                    result += "<td><button onclick='edit_bus(this.id)' id='" + id + "'>Сохранить</button></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_bus_name" + id + "' value='" + name + "'></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_bus_seats" + id + "' value='" + seats + "'></td>";
+                    result += "<td><button onclick='delete_bus(this.id)' class='button_admin_add' id='" + id + "'>Удалить</button></td>";
+                    result += "<td><button onclick='edit_bus(this.id)' class='button_admin_add' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
 
@@ -106,19 +114,18 @@ function show_city(action) {
             responseXML = req.responseXML;
             var cities = responseXML.getElementsByTagName("cities")[0];
             if (cities.childNodes.length > 0) {
-                result = "<table>";
+                result = "<div class='classTable'><table>";
                 for (i = 0; i < cities.childNodes.length; i++) {
                     var city = cities.childNodes[i];
                     var id = city.getElementsByTagName("id")[0].childNodes[0].nodeValue;
                     var name = city.getElementsByTagName("name")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_city_name" + id + "' value='" + name + "'></td>";
-                    result += "<td><button onclick='delete_city(this.id)' id='" + id + "'>Удалить</button></td>";
-                    result += "<td><button onclick='edit_city(this.id)' id='" + id + "'>Сохранить</button></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_city_name" + id + "' value='" + name + "'></td>";
+                    result += "<td><button onclick='delete_city(this.id)' class='button_admin_add' id='" + id + "'>Удалить</button></td>";
+                    result += "<td><button onclick='edit_city(this.id)' class='button_admin_add' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
         }
@@ -132,7 +139,7 @@ function show_station(action) {
             responseXML = req.responseXML;
             var stations = responseXML.getElementsByTagName("stations")[0];
             if (stations.childNodes.length > 0) {
-                result = "<table>";
+                result = "<div class='classTable'><table>";
                 for (i = 0; i < stations.childNodes.length; i++) {
                     var station = stations.childNodes[i];
                     var id = station.getElementsByTagName("id")[0].childNodes[0].nodeValue;
@@ -140,15 +147,14 @@ function show_station(action) {
                     var city_name = station.getElementsByTagName("city_name")[0].childNodes[0].nodeValue;
                     var city_id = station.getElementsByTagName("city_id")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_station_name" + id + "' value='" + name + "'></td>";
-                    result += "<td><input type='text' id='edit_station_city_name" + id + "' value='" + city_name + "'readonly></td>";
-                    result += "<td><input style='display:none' type='text' id='edit_station_city_id" + id + "' value='" + city_id + "'></td>";
-                    result += "<td><button onclick='delete_station(this.id)' id='" + id + "'>Удалить</button></td>";
-                    result += "<td><button onclick='edit_station(this.id)' id='" + id + "'>Сохранить</button></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_station_name" + id + "' value='" + name + "'></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_station_city_name" + id + "' value='" + city_name + "'readonly></td>";
+                    result += "<td><input style='display:none' type='text' class='inputAdmin' id='edit_station_city_id" + id + "' value='" + city_id + "'></td>";
+                    result += "<td><button onclick='delete_station(this.id)' class='button_admin_add' id='" + id + "'>Удалить</button></td>";
+                    result += "<td><button onclick='edit_station(this.id)' class='button_admin_add' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
         }
@@ -162,7 +168,7 @@ function show_routes(action) {
             responseXML = req.responseXML;
             var routes = responseXML.getElementsByTagName("routes")[0];
             if (routes.childNodes.length > 0) {
-                result = "<table>";
+                result = "<div class='classTable'><table>";
                 for (i = 0; i < routes.childNodes.length; i++) {
                     var route = routes.childNodes[i];
                     var id = route.getElementsByTagName("id")[0].childNodes[0].nodeValue;
@@ -175,15 +181,14 @@ function show_routes(action) {
                     var to_city_name = route.getElementsByTagName("to_city_name")[0].childNodes[0].nodeValue;
                     var to_city_id = route.getElementsByTagName("to_city_id")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' id='edit_from_station_name" + id + "' value='" + from_station_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_from_city_name" + id + "' value='" + from_city_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_to_station_name" + id + "' value='" + to_station_name + "' readonly></td>";
-                    result += "<td><input type='text' id='edit_from_city_nsme" + id + "' value='" + to_city_name + "' readonly></td>";
-                    result += "<td><button onclick='delete_route(this.id)' id='" + id + "'>Удалить</button></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_from_station_name" + id + "' value='" + from_station_name + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_from_city_name" + id + "' value='" + from_city_name + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_to_station_name" + id + "' value='" + to_station_name + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' id='edit_from_city_nsme" + id + "' value='" + to_city_name + "' readonly></td>";
+                    result += "<td><button onclick='delete_route(this.id)' class='button_admin_add' id='" + id + "'>Удалить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
         }
@@ -197,7 +202,7 @@ function show_trips(action) {
             responseXML = req.responseXML;
             var trips = responseXML.getElementsByTagName("trips")[0];
             if (trips.childNodes.length > 0) {
-                result = "<table>";
+                result = "<div class='classTable'><table>";
                 for (i = 0; i < trips.childNodes.length; i++) {
                     var trip = trips.childNodes[i];
                     var id = trip.getElementsByTagName("id")[0].childNodes[0].nodeValue;
@@ -226,10 +231,10 @@ function show_trips(action) {
                     result += "<td><label id='to_station_name" + id + "'>" + to_station_name + "&thinsp;&thinsp;&thinsp;</label></td>";
                     result += "<td><label id='to_city_name" + id + "'>" + to_city_name + "&thinsp;&thinsp;&thinsp;</label></td>";
 
-                    result += "<td><button onclick='delete_trip(this.id)' id='" + id + "'>Удалить</button></td>";
+                    result += "<td><button onclick='delete_trip(this.id)' class='button_admin_add' id='" + id + "'>Удалить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
         }
@@ -239,12 +244,12 @@ function show_trips(action) {
 function show_bus_config(action) {
     if (req.readyState == 4) {
         if (req.status == 200) {
-            var result = "<input type='text' id='globalPrice'><button onClick='setGlobalPrice()'>Сохранить</button>";
+            var result = "Установить цену для всех мест: <input class='inputAdmin' type='text' id='globalPrice'><button class='button_admin_add' onClick='setGlobalPrice()'>Сохранить</button>";
             var selected = "";
             responseXML = req.responseXML;
             var seats = responseXML.getElementsByTagName("seats")[0];
             if (seats.childNodes.length > 0) {
-                result += "<table style='position: absolute; left: 0px;'>";
+                result += "<div class='classTable'><table style='position: absolute; left: 0px;'>";
                 result += "<tr><td>Id</td><td>seat_num</td><td>price</td><td>availability</td><td>row</td><td>place</td></tr>";
                 for (i = 0; i < seats.childNodes.length; i++) {
                     var seat = seats.childNodes[i];
@@ -255,10 +260,9 @@ function show_bus_config(action) {
                     var row = seat.getElementsByTagName("row")[0].childNodes[0].nodeValue;
                     var place = seat.getElementsByTagName("place")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td>" + id + "</td>";
-                    result += "<td><input type='text' size='5' id='place_num" + id + "' value='" + place_num + "' readonly></td>";
-                    result += "<td><input type='text' size='10' id='price" + id + "' value='" + price + "'></td>";
-                    result += "<td><select id='availability" + id + "'>";
+                    result += "<td><input type='text' class='inputAdmin' size='5' id='place_num" + id + "' value='" + place_num + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' size='10' id='price" + id + "' value='" + price + "'></td>";
+                    result += "<td><select class='inputAdmin' id='availability" + id + "'>";
                     selected = "";
                     if (availability == "free")
                         selected = "selected";
@@ -275,12 +279,12 @@ function show_bus_config(action) {
                     if (availability == "sales")
                         selected = "selected";
                     result += "<option value='sales' " + selected + ">sales</option></select></td>";
-                    result += "<td><input type='text' size='5' id='row" + id + "' value='" + row + "' readonly></td>";
-                    result += "<td><input type='text' size='5' id='place" + id + "' value='" + place + "' readonly></td>";
-                    result += "<td><button onclick='edit_seat(this.id)' id='" + id + "'>Сохранить</button></td>";
+                    result += "<td><input type='text' size='5' class='inputAdmin' id='row" + id + "' value='" + row + "' readonly></td>";
+                    result += "<td><input type='text' size='5' class='inputAdmin' id='place" + id + "' value='" + place + "' readonly></td>";
+                    result += "<td><button class='button_admin_add'  onclick='edit_seat(this.id)' id='" + id + "'>Сохранить</button></td>";
                     result += "</tr>";
                 }
-                result += "</table>";
+                result += "</table></div>";
             }
             document.getElementById("result").innerHTML = result;
         }
@@ -294,13 +298,13 @@ function show_langs() {
             responseXML = req.responseXML;
             var langs = responseXML.getElementsByTagName("languages")[0];
             if (langs.childNodes.length > 0) {
-                result = "<table>";
+                result = "<table class='classTable'>";
                 for (i = 0; i < langs.childNodes.length; i++) {
                     var lang = langs.childNodes[i];
                     var name = lang.getElementsByTagName("name")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td><input type='text' value='" + name + "' readonly></td>";
-                    result += "<td><button onclick='delete_lang(this.id)' id='" + name + "'>Удалить</button></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + name + "' readonly></td>";
+                    result += "<td><button onclick='delete_lang(this.id)' class='button_admin_add' id='" + name + "'>Удалить</button></td>";
                     result += "</tr>";
                 }
                 result += "</table>";
@@ -317,7 +321,7 @@ function show_tickets() {
             responseXML = req.responseXML;
             var tickets = responseXML.getElementsByTagName("tickets")[0];
             if (tickets.childNodes.length > 0) {
-                result = "<table>";
+                result = "<table class='classTable'>";
                 for (i = 0; i < tickets.childNodes.length; i++) {
                     var ticket = tickets.childNodes[i];
                     var date = ticket.getElementsByTagName("date")[0].childNodes[0].nodeValue;
@@ -326,16 +330,55 @@ function show_tickets() {
                     var seat_num = ticket.getElementsByTagName("seat_num")[0].childNodes[0].nodeValue;
                     var client = ticket.getElementsByTagName("client")[0].childNodes[0].nodeValue;
                     result += "<tr>"
-                    result += "<td><input type='text' value='" + date + "' readonly></td>";
-                    result += "<td><input type='text' value='" + from + "' readonly></td>";
-                    result += "<td><input type='text' value='" + to + "' readonly></td>";
-                    result += "<td><input type='text' value='" + seat_num + "' readonly></td>";
-                    result += "<td><input type='text' value='" + client + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + date + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + from + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + to + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + seat_num + "' readonly></td>";
+                    result += "<td><input type='text' class='inputAdmin' value='" + client + "' readonly></td>";
                     result += "</tr>";
                 }
                 result += "</table>";
             }
             document.getElementById("result").innerHTML = result;
+        }
+    }
+}
+
+var lang1, lang2;
+
+function show_translator(){
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            if (id == "translator1"){
+                input_name = "1";
+            }
+            if (id == "translator2") {
+                input_name = "2";
+            }
+            var result = "";
+            responseXML = req.responseXML;
+            var translators = responseXML.getElementsByTagName("translators")[0];
+            if (translators.childNodes.length > 0) {
+                result = "<div class='classTable'><table>";
+                for (i = 0; i < translators.childNodes.length; i++) {
+                    var translator = translators.childNodes[i];
+                    var translator_id = translator.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+                    var name = translator.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                    result += "<tr>"
+                    result += "<td><input type='text' class='inputAdmin' id='edit_translator" + input_name + translator_id + "' value='" + name + "'></td>";
+                    result += "<td><button onclick='edit_translator(this.id)' class='button_admin_add' id='" + translator_id + id + "'>Сохранить</button></td>";
+                    result += "</tr>";
+                }
+                result += "</table></div>";
+            }
+            if (id == "translator1"){
+                document.getElementById("result").innerHTML = result;
+                lang1 = document.getElementById("first_lang_name").value;
+            }
+            if (id == "translator2") {
+                document.getElementById("result_bus").innerHTML = result;
+                lang2 = document.getElementById("second_lang_name").value;
+            }
         }
     }
 }
@@ -360,7 +403,7 @@ function draw_bus() {
                 var place = seat.getElementsByTagName("place")[0].childNodes[0].nodeValue;
                 indexableseats[row - 1][place - 1] = seat;
             }
-            result = "<table class='busTable'>";
+            result = "<table>";
             for (i = 0; i < 20; i++) {
                 result += "<tr>";
                 for (j = 0; j < 5; j++) {
@@ -403,6 +446,8 @@ function getUrl(action) {
         url = "show_trips";
     if (action == "show_config")
         url = "show_bus_config";
+    if (action == "showconfig")
+        url = "show_bus_config";
     if (action == "showseats")
         url = "show_seats";
     if (action == "showlang")
@@ -411,6 +456,8 @@ function getUrl(action) {
         url = "lang_manager";
     if (action == "showtickets")
         url = "show_tickets";
+    if (action == "translator1" || action == "translator2")
+        url = "show_translator";
     return url;
 }
 
@@ -451,32 +498,40 @@ function getData(action) {
         data = "tripId=" + tripId;
     }
     if (action == "show_config") {
-        value = document.getElementById("config_bus_name").value
+        value = document.getElementById("config_bus_name").value;
         data = "bus_id=" + document.getElementById(value).label;
     }
     if (action == "addlang")
         data = "action=add&lang=" + document.getElementById("new_lang_name").value;
+    if (action == "translator1")
+        data = "lang=" + document.getElementById("first_lang_name").value;
+    if (action == "translator2")
+        data = "lang=" + document.getElementById("second_lang_name").value;
     return data;
 }
 
 var obj;
 
 function changeAdminPanel(object) {
+    document.getElementById("event").innerHTML = "";
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("result_bus").innerHTML = "";
     obj = object;
     document.getElementById("adminContent").innerHTML = document.getElementById("new_" + object).innerHTML;
     request("show" + object)
 }
 
 function delete_bus(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "bus_manager";
     data = "action=delete&id=" + id;
     req = initRequest();
     req.open("POST", url, true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.onreadystatechange = callback;
+    req.onreadystatechange = refresh_buses;
     req.send(data);
-    document.getElementById("bus").click();
+    document.getElementById("event").innerHTML = "Bus deleting";
 }
 
 function edit_bus(id) {
@@ -487,13 +542,14 @@ function edit_bus(id) {
     req = initRequest();
     req.open("POST", url, true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.onreadystatechange = callback;
+    req.onreadystatechange = refresh_buses;
     req.send(data);
-    document.getElementById("bus").click();
+    document.getElementById("event").innerHTML = "Bus editing";
 }
 
 function delete_city(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "city_manager";
     data = "action=delete&id=" + id;
     req = initRequest();
@@ -502,10 +558,12 @@ function delete_city(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("city").click();
+    document.getElementById("event").innerHTML = "City deleting";
 }
 
 function delete_station(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "station_manager";
     data = "action=delete&id=" + id;
     req = initRequest();
@@ -513,7 +571,8 @@ function delete_station(id) {
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = callback;
     req.send(data);
-    document.getElementById("station").click();
+    document.getElementById("stations_for_sity").click();
+    document.getElementById("event").innerHTML = "Station deleting";
 }
 
 function edit_city(id) {
@@ -526,6 +585,7 @@ function edit_city(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("city").click();
+    document.getElementById("event").innerHTML = "City editing";
 }
 
 function edit_station(id) {
@@ -536,9 +596,10 @@ function edit_station(id) {
     req = initRequest();
     req.open("POST", url, true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.onreadystatechange = callback;
+    req.onreadystatechange = refresh_stations;
     req.send(data);
-    document.getElementById("station").click();
+    document.getElementById("event").innerHTML = "Station editing";
+
 }
 
 function edit_seat(id) {
@@ -552,10 +613,12 @@ function edit_seat(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("seats").click();
+    document.getElementById("event").innerHTML = "Seat editing";
 }
 
 function delete_route(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "route_manager";
     data = "action=delete&id=" + id;
     req = initRequest();
@@ -564,12 +627,12 @@ function delete_route(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("route").click();
-
-
+    document.getElementById("event").innerHTML = "Route deleting";
 }
 
 function delete_trip(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "trip_manager";
     data = "action=delete&id=" + id;
     req = initRequest();
@@ -578,11 +641,13 @@ function delete_trip(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("trip").click();
+    document.getElementById("event").innerHTML = "Trip deleting";
 
 }
 
 function delete_lang(id) {
-    alert("Are you sure?");
+    if(!confirm("Are you sure?"))
+        return;
     url = "lang_manager";
     data = "action=delete&lang=" + id;
     req = initRequest();
@@ -591,6 +656,7 @@ function delete_lang(id) {
     req.onreadystatechange = callback;
     req.send(data);
     document.getElementById("lang").click();
+    document.getElementById("event").innerHTML = "Lang deleting";
 }
 
 function show_station_autocomplete() {
@@ -672,7 +738,7 @@ function swap_places(second) {
     req = initRequest();
     req.open("POST", "swap_seats", true);
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    req.onreadystatechange = callback;
+    req.onreadystatechange = refresh_config;
     req.send(data);
 }
 
@@ -695,7 +761,7 @@ function setGlobalPrice() {
     req.send(data);
 }
 
-function filter(action){
+function filter(action) {
     from = "";
     date_from = document.getElementById("filter_date_from").value;
     date_to = document.getElementById("filter_date_to").value;
@@ -716,4 +782,111 @@ function filter(action){
     req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = show_tickets;
     req.send(data);
+}
+
+function Login() {
+    pass = prompt();
+    if (pass != "qwerty")
+        document.location.href = "/";
+}
+
+function refresh_buses() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("bus").click();
+        }
+    }
+}
+
+function refresh_cities() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("city").click();
+        }
+    }
+}
+
+function refresh_stations() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("event").innerHTML = "";
+            document.getElementById("stations_for_sity").click();
+        }
+    }
+}
+
+function refresh_routes() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("route").click();
+        }
+    }
+}
+
+function refresh_trips() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("trip").click();
+        }
+    }
+}
+
+function refresh_langs() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("lang").click();
+        }
+    }
+}
+
+function refresh_config() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            document.getElementById("show_config").click();
+        }
+    }
+}
+
+function show_station_city(){
+    req = initRequest();
+    req.open("POST", "show_station_with_filter", true);
+    data = "filter=" + document.getElementById("station_city").value;
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.onreadystatechange = show_station;
+    req.send(data);
+}
+
+function edit_translator(id){
+    if (id.substr(id.indexOf("t")) == "translator1") {
+        lang = lang1;
+        name = document.getElementById("edit_translator1" + id.substr(0, id.indexOf("t"))).value;
+    }
+    if (id.substr(id.indexOf("t")) == "translator2") {
+        lang = lang2;
+        name = document.getElementById("edit_translator2" + id.substr(0, id.indexOf("t"))).value;
+    }
+    id = id.substr(0, id.indexOf("t"));
+    data = "id=" + id;
+    data += "&lang=" + lang;
+    data += "&name=" + name;
+    req = initRequest();
+    req.open("POST", "translator_manager", true);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    req.send(data);
+    document.getElementById("event").innerHTML = "String edited";
+}
+
+function event(action){
+    if (action == "add_bus")
+        document.getElementById("event").innerHTML = "Bus adding";
+    if (action == "add_city")
+        document.getElementById("event").innerHTML = "City adding";
+    if (action == "add_station")
+        document.getElementById("event").innerHTML = "Station adding";
+    if (action == "add_route")
+        document.getElementById("event").innerHTML = "Route adding";
+    if (action == "add_trip")
+        document.getElementById("event").innerHTML = "Trip adding";
+    if (action == "addlang")
+        document.getElementById("event").innerHTML = "Language adding";
 }

@@ -28,10 +28,11 @@ public abstract class SeatObserver {
     public static ArrayList<SeatPlaceWithPrice> selectSeatsWithPrice(long tripId) {
         ArrayList<SeatPlaceWithPrice> res = new ArrayList<SeatPlaceWithPrice>();
         ResultSet resultSet = null;
-        String query = "SELECT seats.Id, seats.seat_num, seats.price, seats_status.status, bus_config.row, bus_config.place FROM bus_config, seats, trips, seats_status WHERE bus_config.bus = trips.bus " +
+        String query = "SELECT DISTINCT seats.Id, seats.seat_num, seats.price, seats_status.status, bus_config.row, bus_config.place FROM bus_config, seats, trips, seats_status WHERE bus_config.bus = trips.bus " +
                 "AND bus_config.seat = seats.seat_num " +
                 "AND trips.Id = " + tripId +
-                " AND seats_status.Id = seats.availability";
+                " AND seats.trip = " + tripId +
+                " AND seats_status.Id = seats.availability ORDER BY seats.seat_num";
         DBWorker dbWorker = new DBWorker();
         resultSet = dbWorker.executeQuery(query);
 
@@ -42,6 +43,7 @@ public abstract class SeatObserver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        dbWorker.closeConnection();
         return res;
     }
 

@@ -7,6 +7,10 @@ import database.DBWorker;
  */
 public abstract class CitiesManager {
     static public void add(String name, String lang) {
+        if (name.equals(""))
+            name = "no name";
+        if (lang.equals(""))
+            lang = "gb";
         String query = "INSERT INTO cities (name_"+lang+") VALUES ('"+ name +"')";
         DBWorker dbWorker = new DBWorker();
         dbWorker.execute(query);

@@ -27,6 +27,13 @@ public class Contacts extends HttpServlet {
         DBWorker dbWorker = new DBWorker();
 
         request.setAttribute("Home", dbWorker.getPhrase(1, lang));
+        request.setAttribute("Contact", dbWorker.getPhrase(2, lang));
+        request.setAttribute("BuyTicket", dbWorker.getPhrase(3, lang));
+        request.setAttribute("Info", dbWorker.getPhrase(4, lang));
+        request.setAttribute("Site", dbWorker.getPhrase(16, lang));
+        request.setAttribute("Name", dbWorker.getPhrase(38, lang));
+        request.setAttribute("Message", dbWorker.getPhrase(44, lang));
+        request.setAttribute("Send", dbWorker.getPhrase(45, lang));
 
         dbWorker.closeConnection();
 
@@ -36,6 +43,18 @@ public class Contacts extends HttpServlet {
         String name = request.getParameter("name");
         String message = request.getParameter("message");
         sender.send("from client", "From " + name + " (" + email + "), " + message, "tickets.bus@yandex.ua", "kolya.simotyuk@gmail.com");
+        String success = "Email sent";
+        request.setAttribute("result", success);
+
+
+
+        ArrayList<String> languages = LanguagesObserver.select();
+        request.setAttribute("languages", languages);
+
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/contacts.jsp");
+        dispatcher.forward(request, response);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
